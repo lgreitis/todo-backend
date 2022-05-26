@@ -50,8 +50,8 @@ module.exports = {
       host: '0.0.0.0',
       ref: 'origin/master',
       repo: 'git@github.com:repo.git',
-      path: 'dist/server.js',
-      'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --only prod',
+      path: 'dist/index.js',
+      'post-deploy': 'yarn install && yarn build && pm2 reload ecosystem.config.js --only prod',
     },
   },
 };

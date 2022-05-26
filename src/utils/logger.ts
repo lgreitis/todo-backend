@@ -1,4 +1,4 @@
-import { LOG_DIR } from '@/constants';
+import { LOG_DIR } from '@constants';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import winston from 'winston';

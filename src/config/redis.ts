@@ -6,9 +6,7 @@ const redisClient = redis.createClient();
 const redisConfig = () => {
   redisClient.on('error', err => logger.error(err));
 
-  redisClient.connect().then(() => {
-    logger.info('Redis connected');
-  });
+  return redisClient.connect();
 };
 
 export { redisClient, redisConfig };

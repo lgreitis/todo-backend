@@ -16,8 +16,13 @@ process.on('uncaughtException', err => {
 });
 
 const startServer = async () => {
-  mongooseConfig();
-  redisConfig();
+  logger.info(`=================================`);
+  await mongooseConfig().then(() => {
+    logger.info('MongoDB connected');
+  });
+  await redisConfig().then(() => {
+    logger.info('Redis connected');
+  });
 
   const app = expressConfig([indexRoute]);
   const httpServ = http.createServer(app);
