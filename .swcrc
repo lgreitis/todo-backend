@@ -20,7 +20,6 @@
     },
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"],
       "@config/*": ["config/*"],
       "@controllers": ["controllers"],
       "@constants": ["constants"],
@@ -29,7 +28,7 @@
       "@interfaces/*": ["interfaces/*"],
       "@middlewares/*": ["middlewares/*"],
       "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
+      "@routes": ["routes"],
       "@services/*": ["services/*"],
       "@utils/*": ["utils/*"]
     }

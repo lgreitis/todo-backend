@@ -1,5 +1,5 @@
 import expressConfig from '@config/express';
-import indexRoute from '@routes/index.route';
+import { indexRoute } from '@routes';
 import request from 'supertest';
 
 let server: any;

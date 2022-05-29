@@ -1,17 +1,17 @@
+import expressConfig from '@config/express';
 import mongooseConfig from '@config/mongoose';
 import { redisConfig } from '@config/redis';
-import indexRoute from '@routes/index.route';
+import socketConfig from '@config/socket';
+import { NODE_ENV, PORT } from '@constants';
+import { authRoute, indexRoute } from '@routes';
 import { logger } from '@utils/logger';
 import * as http from 'http';
-
-import expressConfig from './config/express';
-import { NODE_ENV, PORT } from './constants';
 
 const env = NODE_ENV || 'development';
 const port = PORT || 3000;
 
 process.on('uncaughtException', err => {
-  logger.error(err);
+  console.error(err);
   process.exit(1);
 });
 
@@ -24,8 +24,10 @@ const startServer = async () => {
     logger.info('Redis connected');
   });
 
-  const app = expressConfig([indexRoute]);
+  const app = expressConfig([indexRoute, authRoute]);
   const httpServ = http.createServer(app);
+
+  socketConfig(httpServ);
 
   httpServ.listen(port, () => {
     logger.info(`=================================`);
