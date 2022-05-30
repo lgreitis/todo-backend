@@ -1,3 +1,4 @@
+import { JWT_SECRET } from '@constants';
 import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { User } from '@models/user';
@@ -13,7 +14,12 @@ const register = async (data: CreateUserDto) => {
 
   const hashedPassword = await hash(data.password, 10);
 
-  const createUserData = await User.create({ ...data, password_hash: hashedPassword });
+  const createUserData = await User.create({
+    ...data,
+    credits: 100000,
+    age: 0,
+    password_hash: hashedPassword,
+  });
 
   const token = signToken(createUserData._id);
 
@@ -23,31 +29,33 @@ const register = async (data: CreateUserDto) => {
 const login = async (data: LoginUserDto) => {
   const findUser = await User.findOne({ username: data.username });
 
-  if (!findUser) throw new HttpException(400, 'User not found');
+  if (!findUser) throw new HttpException(400, 'Failed to login');
 
   const isPasswordMatching = await compare(data.password, findUser.password_hash);
-  if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
+  if (!isPasswordMatching) throw new HttpException(400, 'Failed to login');
 
-  const token = signToken(findUser._id);
+  const token = await signToken(findUser._id);
 
   return token;
 };
 
 const signToken = (id: string) => {
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
-    if (err) throw new HttpException(500, 'Error signing token');
+  return new Promise((resolve, reject) => {
+    jwt.sign({ id }, JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
+      if (err) reject(new HttpException(500, 'Error signing token'));
 
-    return token;
+      resolve(token);
+    });
   });
 };
 
 const verifyToken = (token: string) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
     return decoded;
   } catch (err) {
     throw new HttpException(401, 'Invalid token');
   }
 };
 
-export { register, login, verifyToken };
+export const authService = { register, login, verifyToken };

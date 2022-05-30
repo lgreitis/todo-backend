@@ -3,9 +3,11 @@ import mongooseConfig from '@config/mongoose';
 import { redisConfig } from '@config/redis';
 import socketConfig from '@config/socket';
 import { NODE_ENV, PORT } from '@constants';
-import { authRoute, indexRoute } from '@routes';
+import { authRoute, indexRoute, nbaRoute, userRoute } from '@routes';
 import { logger } from '@utils/logger';
 import * as http from 'http';
+
+import { initFetch } from './services/nba.service';
 
 const env = NODE_ENV || 'development';
 const port = PORT || 3000;
@@ -24,10 +26,12 @@ const startServer = async () => {
     logger.info('Redis connected');
   });
 
-  const app = expressConfig([indexRoute, authRoute]);
+  const app = expressConfig([indexRoute, authRoute, userRoute, nbaRoute]);
   const httpServ = http.createServer(app);
 
   socketConfig(httpServ);
+
+  // initFetch();
 
   httpServ.listen(port, () => {
     logger.info(`=================================`);
