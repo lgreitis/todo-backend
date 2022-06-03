@@ -26,7 +26,7 @@ const startServer = async () => {
     logger.info('Redis connected');
   });
 
-  const app = expressConfig([indexRoute, authRoute, userRoute, nbaRoute]);
+  const app = expressConfig([authRoute, userRoute, nbaRoute, indexRoute]);
   const httpServ = http.createServer(app);
 
   socketConfig(httpServ);
