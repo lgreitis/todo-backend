@@ -9,6 +9,8 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUI from 'swagger-ui-express';
 
 const expressConfig = (routes: Routes[]) => {
   const app = express();
@@ -21,14 +23,32 @@ const expressConfig = (routes: Routes[]) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-
   routes.forEach(route => {
     app.use('/', route.router);
   });
 
   app.use(errorMiddleware);
 
+  swaggerConfig(app);
+
   return app;
+};
+
+const swaggerConfig = (app: express.Application) => {
+  const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'AZILS backend',
+        version: '1.0.0',
+      },
+    },
+    apis: ['swagger.yaml'],
+  };
+
+  const openapiSpecification = swaggerJsdoc(options);
+
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
 };
 
 export default expressConfig;
