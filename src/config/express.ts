@@ -5,11 +5,10 @@ import { stream } from '@utils/logger';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import * as path from 'path';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
 
@@ -17,23 +16,16 @@ const expressConfig = (routes: Routes[]) => {
   const app = express();
 
   app.use(morgan(LOG_FORMAT, { stream }));
-  // app.use(cors({ ori gin: ORIGIN, credentials: CREDENTIALS }));
-  // app.use(hpp());
-  // app.use(helmet());
+  app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+  app.use(hpp());
+  app.use(helmet());
   app.use(compression());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-
-  // app.use(express.static(path.join(__dirname, '/web')));
-
   routes.forEach(route => {
     app.use('/', route.router);
   });
-
-  // app.get('/*', (req: Request, res: Response) => {
-  //   res.sendFile(path.join(__dirname, '/web', 'index.html'));
-  // });
 
   app.use(errorMiddleware);
 

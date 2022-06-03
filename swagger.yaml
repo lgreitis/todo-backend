@@ -3,48 +3,8 @@ tags:
     description: user routes
   - name: auth
     description: authentication routes
-  - name: match
-    description: match routes
 
 paths:
-  # [GET] /match
-  /match:
-    get:
-      tags:
-        - match
-      summary: Get matches
-      consumes:
-        - application/x-www-form-urlencoded
-      parameters:
-        - in: query
-          name: ended
-          schema:
-            type: boolean
-          required: true
-      responses:
-        200:
-          description: "OK"
-
-  # [POST] /match/bet
-  /match/bet:
-    post:
-      tags:
-        - match
-      summary: Make bet on team
-      consumes:
-        - application/x-www-form-urlencoded
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/definitions/matchBet"
-      security:
-        - bearerAuth: []
-      responses:
-        200:
-          description: "OK"
-
   # [GET] /user
   /user:
     get:
@@ -75,7 +35,7 @@ paths:
         200:
           description: "OK"
 
-  # [GET] /auth/login
+  # [POST] /auth/register
   /auth/register:
     post:
       tags:
@@ -95,20 +55,6 @@ paths:
 
 # definitions
 definitions:
-  matchBet:
-    type: object
-    required:
-      - match_id
-      - bet
-      - team
-    properties:
-      match_id:
-        type: string
-      bet:
-        type: number
-      team:
-        type: number
-        description: 1 or 2
   createUser:
     type: object
     required:
