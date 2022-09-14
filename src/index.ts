@@ -16,9 +16,9 @@ const startServer = async () => {
   await mongooseConfig().then(() => {
     logger.info('MongoDB connected');
   });
-  await redisConfig().then(() => {
-    logger.info('Redis connected');
-  });
+  // await redisConfig().then(() => {
+  //   logger.info('Redis connected');
+  // });
 
   const app = expressConfig([authRoute, userRoute, indexRoute]);
   const httpServ = http.createServer(app);

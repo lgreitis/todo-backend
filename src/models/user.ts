@@ -1,5 +1,6 @@
-import { Document, model, Model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
+// TODO: don't extend Document, will drop support
 export interface IUser extends Document {
   username: string;
   password_hash: string;
@@ -14,4 +15,4 @@ const UserSchema = new Schema({
   role: { type: String, enum: ['User', 'Administrator'], required: true, default: 'User' },
 });
 
-export const User: Model<IUser> = model('User', UserSchema);
+export const User = model<IUser>('User', UserSchema);
