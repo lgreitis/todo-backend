@@ -2,6 +2,7 @@ import expressConfig from '@config/express';
 import { indexRoute } from '@routes';
 import request from 'supertest';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let server: any;
 
 beforeAll(() => {

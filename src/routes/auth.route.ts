@@ -1,5 +1,5 @@
 import { authController } from '@controllers';
-import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
+import { CreateUserSchema, LoginUserSchema } from '@dtos/user.dto';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -7,11 +7,11 @@ const router = Router();
 
 const path = '/auth';
 
-router.post(`${path}/login`, validationMiddleware(LoginUserDto, 'body'), authController.login);
+router.post(`${path}/login`, validationMiddleware(LoginUserSchema, 'body'), authController.login);
 
 router.post(
   `${path}/register`,
-  validationMiddleware(CreateUserDto, 'body'),
+  validationMiddleware(CreateUserSchema, 'body'),
   authController.register
 );
 

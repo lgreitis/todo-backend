@@ -23,7 +23,7 @@ const expressConfig = (routes: Routes[]) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-  routes.forEach(route => {
+  routes.forEach((route) => {
     app.use('/', route.router);
   });
 
@@ -39,7 +39,7 @@ const swaggerConfig = (app: express.Application) => {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'AZILS backend',
+        title: 'OMPHALOS backend',
         version: '1.0.0',
       },
     },

@@ -45,7 +45,7 @@ const logger = winston.createLogger({
       dirname: logDir + '/error', // log file /logs/error/*.log in save
       filename: `%DATE%.log`,
       maxFiles: 30, // 30 Days saved
-      handleExceptions: true,
+      // handleExceptions: true,
       json: false,
       zippedArchive: true,
     }),

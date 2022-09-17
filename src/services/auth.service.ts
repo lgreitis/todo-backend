@@ -1,40 +1,43 @@
+import { prisma } from '@config/prisma';
 import { JWT_SECRET } from '@constants';
 import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/HttpException';
-import { User } from '@models/user';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const register = async (data: CreateUserDto) => {
-  const findUser = await User.findOne({
-    $or: [{ username: data.username }, { email: data.email }],
+  const findUser = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
   });
 
   if (findUser) throw new HttpException(409, 'User already exists');
 
   const hashedPassword = await hash(data.password, 10);
 
-  const createUserData = await User.create({
-    ...data,
-    credits: 100000,
-    age: 0,
-    password_hash: hashedPassword,
+  const createUserData = await prisma.user.create({
+    data: { email: data.email, username: data.username, password: hashedPassword },
   });
 
-  const token = signToken(createUserData._id);
+  const token = signToken(createUserData.id);
 
   return token;
 };
 
 const login = async (data: LoginUserDto) => {
-  const findUser = await User.findOne({ username: data.username });
+  const findUser = await await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+  });
 
   if (!findUser) throw new HttpException(400, 'Failed to login');
 
-  const isPasswordMatching = await compare(data.password, findUser.password_hash);
+  const isPasswordMatching = await compare(data.password, findUser.password);
   if (!isPasswordMatching) throw new HttpException(400, 'Failed to login');
 
-  const token = await signToken(findUser._id);
+  const token = await signToken(findUser.id);
 
   return token;
 };

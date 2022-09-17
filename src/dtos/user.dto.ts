@@ -1,23 +1,13 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-export interface CreateUserDto {
-  username: string;
-  password: string;
-  email: string;
-}
+export const CreateUserSchema = z
+  .object({ username: z.string(), email: z.string().email(), password: z.string() })
+  .strict();
 
-export interface LoginUserDto {
-  username: string;
-  password: string;
-}
+export type CreateUserDto = z.infer<typeof CreateUserSchema>;
 
-export const CreateUserDto = Joi.object({
-  username: Joi.string().required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().required(),
-});
+export const LoginUserSchema = z
+  .object({ email: z.string().email(), password: z.string() })
+  .strict();
 
-export const LoginUserDto = Joi.object({
-  username: Joi.string().required(),
-  password: Joi.string().required(),
-});
+export type LoginUserDto = z.infer<typeof LoginUserSchema>;

@@ -1,8 +1,11 @@
+import { prisma } from '@config/prisma';
 import { HttpException } from '@exceptions/HttpException';
-import { User } from '@models/user';
 
 const getById = async (id: string) => {
-  const findUser = await User.findById(id);
+  const findUser = await prisma.user.findUnique({
+    where: { id: id },
+    select: { username: true, email: true },
+  });
 
   if (!findUser) throw new HttpException(400, 'Failed to retrieve user');
 

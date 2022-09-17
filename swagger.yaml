@@ -15,8 +15,7 @@ paths:
         - bearerAuth: []
       responses:
         200:
-          description: "OK"
-
+          description: 'OK'
   # [POST] /auth/login
   /auth/login:
     post:
@@ -30,10 +29,10 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/definitions/loginUser"
+              $ref: '#/definitions/loginUser'
       responses:
         200:
-          description: "OK"
+          description: 'OK'
 
   # [POST] /auth/register
   /auth/register:
@@ -48,10 +47,10 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/definitions/createUser"
+              $ref: '#/definitions/createUser'
       responses:
         200:
-          description: "OK"
+          description: 'OK'
 
 # definitions
 definitions:
@@ -75,12 +74,12 @@ definitions:
   loginUser:
     type: object
     required:
-      - username
+      - email
       - password
     properties:
-      username:
+      email:
         type: string
-        description: username
+        description: email
       password:
         type: string
         format: password
