@@ -1,5 +1,5 @@
 import { HttpException } from '@exceptions/HttpException';
-import { authService } from '@services/auth.service';
+import { verifyToken } from '@utils/jwt';
 import { NextFunction, Request, Response } from 'express';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   const token = auth.slice(7);
 
   try {
-    const decoded = authService.verifyToken(token);
+    const decoded = verifyToken(token);
     req.tokenData = decoded.id;
     next();
   } catch (err) {

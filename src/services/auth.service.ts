@@ -1,9 +1,8 @@
 import { prisma } from '@config/prisma';
-import { JWT_SECRET } from '@constants';
 import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/HttpException';
+import { signToken } from '@utils/jwt';
 import { compare, hash } from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 const register = async (data: CreateUserDto) => {
   const findUser = await prisma.user.findUnique({
@@ -42,23 +41,4 @@ const login = async (data: LoginUserDto) => {
   return token;
 };
 
-const signToken = (id: string) => {
-  return new Promise((resolve, reject) => {
-    jwt.sign({ id }, JWT_SECRET, { expiresIn: '7d' }, (err, token) => {
-      if (err) reject(new HttpException(500, 'Error signing token'));
-
-      resolve(token);
-    });
-  });
-};
-
-const verifyToken = (token: string) => {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-    return decoded;
-  } catch (err) {
-    throw new HttpException(401, 'Invalid token');
-  }
-};
-
-export const authService = { register, login, verifyToken };
+export const authService = { register, login };

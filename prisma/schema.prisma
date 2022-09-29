@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,4 +12,30 @@ model User {
   email    String @unique
   username String
   password String
+
+  organizations Organization[]
+}
+
+model Organization {
+  id    String @id @default(uuid())
+  name  String
+  users User[]
+}
+
+model Folder {
+  id    String @id @default(uuid())
+  name  String
+  files File[]
+
+  childrenFolders Folder[] @relation("FolderHierarcy")
+  parent          Folder?  @relation("FolderHierarcy", fields: [parentId], references: [id])
+  parentId        String?
+}
+
+model File {
+  id       String  @id @default(uuid())
+  name     String
+  parentId String?
+  Folder   Folder? @relation(fields: [parentId], references: [id])
+  data     String  @default("")
 }
