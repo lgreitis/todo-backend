@@ -13,6 +13,7 @@ export const CreateItemSchema = z
     type: ItemEnumSchema,
     name: z.string(),
     parentId: z.string().optional(),
+    organizationId: z.string(),
   })
   .strict();
 

@@ -3,7 +3,7 @@ import { CreateItemDto, EditItemDto } from '@dtos/directory.dto';
 
 const addFile = async (data: CreateItemDto) => {
   const file = await prisma.file.create({
-    data: { name: data.name, parentId: data.parentId },
+    data: { name: data.name, parentId: data.parentId, organizationId: data.organizationId },
   });
 
   return file;

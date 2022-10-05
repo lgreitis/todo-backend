@@ -1,9 +1,10 @@
 import { prisma } from '@config/prisma';
 import { CreateItemDto, EditItemDto } from '@dtos/directory.dto';
+import { HttpException } from '@exceptions/HttpException';
 
 const addFolder = async (data: CreateItemDto) => {
   const folder = await prisma.folder.create({
-    data: { name: data.name, parentId: data.parentId },
+    data: { name: data.name, parentId: data.parentId, organizationId: data.organizationId },
   });
 
   return folder;
@@ -18,4 +19,14 @@ const renameFolder = async (data: EditItemDto) => {
   return folder;
 };
 
-export const folderService = { addFolder, renameFolder };
+const getFolder = async (id: string) => {
+  const folder = await prisma.folder.findUnique({ where: { id } });
+
+  if (!folder) {
+    throw new HttpException(404, 'Folder not found');
+  }
+
+  return folder;
+};
+
+export const folderService = { addFolder, renameFolder, getFolder };

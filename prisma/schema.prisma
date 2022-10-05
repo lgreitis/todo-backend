@@ -13,19 +13,29 @@ model User {
   username String
   password String
 
-  organizations Organization[]
+  organizations      Organization[] @relation("organizations")
+  ownedOrganizations Organization[] @relation("ownedOrganizations")
 }
 
 model Organization {
-  id    String @id @default(uuid())
-  name  String
-  users User[]
+  id   String @id @default(uuid())
+  name String
+
+  users       User[] @relation("organizations")
+  ownerUser   User   @relation("ownedOrganizations", fields: [ownerUserId], references: [id])
+  ownerUserId String
+
+  Folder Folder[]
+  File   File[]
 }
 
 model Folder {
   id    String @id @default(uuid())
   name  String
   files File[]
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
 
   childrenFolders Folder[] @relation("FolderHierarcy")
   parent          Folder?  @relation("FolderHierarcy", fields: [parentId], references: [id])
@@ -36,6 +46,10 @@ model File {
   id       String  @id @default(uuid())
   name     String
   parentId String?
-  Folder   Folder? @relation(fields: [parentId], references: [id])
-  data     String  @default("")
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  Folder Folder? @relation(fields: [parentId], references: [id])
+  data   String  @default("")
 }

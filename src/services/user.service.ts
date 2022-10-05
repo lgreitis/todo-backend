@@ -12,4 +12,23 @@ const getById = async (id: string) => {
   return findUser;
 };
 
-export const userService = { getById };
+const getUserOrganizations = async (id: string) => {
+  const user = await prisma.user.findUnique({ where: { id }, select: { organizations: true } });
+
+  if (!user) throw new HttpException(400, 'Failed to retrieve user');
+
+  return user;
+};
+
+const getUserOwnedOrganizations = async (id: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+    select: { ownedOrganizations: true },
+  });
+
+  if (!user) throw new HttpException(400, 'Failed to retrieve user');
+
+  return user;
+};
+
+export const userService = { getById, getUserOrganizations, getUserOwnedOrganizations };
