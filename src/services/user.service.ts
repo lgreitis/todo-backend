@@ -31,4 +31,30 @@ const getUserOwnedOrganizations = async (id: string) => {
   return user;
 };
 
-export const userService = { getById, getUserOrganizations, getUserOwnedOrganizations };
+const isUserInOrganization = async (userId: string, organizationId: string) => {
+  const user = await userService.getUserOrganizations(userId);
+
+  if (!user.organizations.find((el) => el.id === organizationId)) {
+    return false;
+  }
+
+  return true;
+};
+
+const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
+  const user = await userService.getUserOwnedOrganizations(userId);
+
+  if (!user.ownedOrganizations.find((el) => el.id === organizationId)) {
+    return false;
+  }
+
+  return true;
+};
+
+export const userService = {
+  getById,
+  getUserOrganizations,
+  getUserOwnedOrganizations,
+  isUserInOrganization,
+  isUserOwnerOfOrganization,
+};
