@@ -1,4 +1,4 @@
-import { userService } from '@services/user.service';
+import { userService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const getMeta = async (req: Request, res: Response, next: NextFunction) => {

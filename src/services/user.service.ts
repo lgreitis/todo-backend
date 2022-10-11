@@ -1,7 +1,7 @@
 import { prisma } from '@config/prisma';
 import { HttpException } from '@exceptions/httpException';
 
-const getById = async (id: string) => {
+export const getById = async (id: string) => {
   const findUser = await prisma.user.findUnique({
     where: { id: id },
     select: { username: true, email: true },
@@ -12,7 +12,7 @@ const getById = async (id: string) => {
   return findUser;
 };
 
-const getUserOrganizations = async (id: string) => {
+export const getUserOrganizations = async (id: string) => {
   const user = await prisma.user.findUnique({ where: { id }, select: { organizations: true } });
 
   if (!user) throw new HttpException(400, 'Failed to retrieve user');
@@ -20,7 +20,7 @@ const getUserOrganizations = async (id: string) => {
   return user;
 };
 
-const getUserOwnedOrganizations = async (id: string) => {
+export const getUserOwnedOrganizations = async (id: string) => {
   const user = await prisma.user.findUnique({
     where: { id },
     select: { ownedOrganizations: true },
@@ -31,7 +31,7 @@ const getUserOwnedOrganizations = async (id: string) => {
   return user;
 };
 
-const isUserInOrganization = async (userId: string, organizationId: string) => {
+export const isUserInOrganization = async (userId: string, organizationId: string) => {
   const organization = await prisma.organization.findFirst({
     where: { users: { some: { id: userId } }, id: organizationId },
   });
@@ -39,18 +39,10 @@ const isUserInOrganization = async (userId: string, organizationId: string) => {
   return organization ? true : false;
 };
 
-const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
+export const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
   const organization = await prisma.organization.findFirst({
     where: { ownerUserId: userId, id: organizationId },
   });
 
   return organization ? true : false;
-};
-
-export const userService = {
-  getById,
-  getUserOrganizations,
-  getUserOwnedOrganizations,
-  isUserInOrganization,
-  isUserOwnerOfOrganization,
 };

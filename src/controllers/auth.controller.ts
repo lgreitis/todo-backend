@@ -1,5 +1,5 @@
 import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
-import { authService } from '@services/auth.service';
+import { authService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {

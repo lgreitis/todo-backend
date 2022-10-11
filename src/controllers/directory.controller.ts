@@ -1,8 +1,6 @@
 import { CreateItemDto, EditItemDto, ItemEnum, RemoveItemDto } from '@dtos/directory.dto';
 import { File, Folder } from '@prisma/client';
-import { directoryService } from '@services/directory.service';
-import { fileService } from '@services/file.service';
-import { folderService } from '@services/folder.service';
+import { directoryService, fileService, folderService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const meta = async (req: Request, res: Response, next: NextFunction) => {

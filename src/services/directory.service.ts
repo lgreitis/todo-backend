@@ -1,7 +1,7 @@
 import { prisma } from '@config/prisma';
 import { DirectoryItems } from '@interfaces/directory.interface';
 
-const getRoot = async () => {
+export const getRoot = async () => {
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
@@ -15,7 +15,7 @@ const getRoot = async () => {
   return items;
 };
 
-const getChildren = async (id: string) => {
+export const getChildren = async (id: string) => {
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
@@ -29,8 +29,6 @@ const getChildren = async (id: string) => {
   return items;
 };
 
-const get = async (id: string | null) => {
+export const get = async (id: string | null) => {
   return await (id ? getChildren(id) : getRoot());
 };
-
-export const directoryService = { get, getRoot, getChildren };

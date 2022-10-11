@@ -4,7 +4,7 @@ import { HttpException } from '@exceptions/httpException';
 import { signToken } from '@utils/jwt';
 import { compare, hash } from 'bcrypt';
 
-const register = async (data: CreateUserDto) => {
+export const register = async (data: CreateUserDto) => {
   const findUser = await prisma.user.findUnique({
     where: {
       email: data.email,
@@ -24,7 +24,7 @@ const register = async (data: CreateUserDto) => {
   return token;
 };
 
-const login = async (data: LoginUserDto) => {
+export const login = async (data: LoginUserDto) => {
   const findUser = await prisma.user.findUnique({
     where: {
       email: data.email,
@@ -40,5 +40,3 @@ const login = async (data: LoginUserDto) => {
 
   return token;
 };
-
-export const authService = { register, login };

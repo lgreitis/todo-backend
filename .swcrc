@@ -23,7 +23,7 @@
       "@middlewares/*": ["middlewares/*"],
       "@models/*": ["models/*"],
       "@routes": ["routes"],
-      "@services/*": ["services/*"],
+      "@services": ["services"],
       "@utils/*": ["utils/*"]
     }
   },

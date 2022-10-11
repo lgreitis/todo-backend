@@ -1,9 +1,9 @@
 import { prisma } from '@config/prisma';
 import { CreateOrganizationDto, EditOrganizationDto } from '@dtos/organization.dto';
 import { HttpException } from '@exceptions/httpException';
-import { userService } from './user.service';
+import { userService } from '@services';
 
-const getOrganization = async (userId: string, id: string) => {
+export const getOrganization = async (userId: string, id: string) => {
   const organization = await prisma.organization.findFirst({
     where: { id, users: { some: { id: userId } } },
     select: {
@@ -20,7 +20,7 @@ const getOrganization = async (userId: string, id: string) => {
   return organization;
 };
 
-const createOrganization = async (userId: string, data: CreateOrganizationDto) => {
+export const createOrganization = async (userId: string, data: CreateOrganizationDto) => {
   const organization = await prisma.organization.create({
     data: { name: data.name, ownerUserId: userId, users: { connect: { id: userId } } },
   });
@@ -28,7 +28,7 @@ const createOrganization = async (userId: string, data: CreateOrganizationDto) =
   return organization;
 };
 
-const deleteOrganization = async (userId: string, id: string) => {
+export const deleteOrganization = async (userId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(userId, id))) {
     throw new HttpException(401, 'Unauthorized');
   }
@@ -36,7 +36,7 @@ const deleteOrganization = async (userId: string, id: string) => {
   await prisma.organization.delete({ where: { id } });
 };
 
-const editOrganization = async (userId: string, data: EditOrganizationDto) => {
+export const editOrganization = async (userId: string, data: EditOrganizationDto) => {
   if (!(await userService.isUserOwnerOfOrganization(userId, data.id))) {
     throw new HttpException(401, 'Unauthorized');
   }
@@ -49,7 +49,7 @@ const editOrganization = async (userId: string, data: EditOrganizationDto) => {
   return organization;
 };
 
-const addToOrganization = async (userId: string, ownerId: string, id: string) => {
+export const addToOrganization = async (userId: string, ownerId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(ownerId, id))) {
     throw new HttpException(401, 'Unauthorized');
   }
@@ -62,7 +62,7 @@ const addToOrganization = async (userId: string, ownerId: string, id: string) =>
   return organization;
 };
 
-const removeFromOrganization = async (userId: string, ownerId: string, id: string) => {
+export const removeFromOrganization = async (userId: string, ownerId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(ownerId, id))) {
     throw new HttpException(401, 'Unauthorized');
   }
@@ -79,20 +79,10 @@ const removeFromOrganization = async (userId: string, ownerId: string, id: strin
   return organization;
 };
 
-const listOrganizations = async (userId: string) => {
+export const listOrganizations = async (userId: string) => {
   const organizations = await prisma.organization.findMany({
     where: { users: { some: { id: userId } } },
   });
 
   return organizations;
-};
-
-export const organizationService = {
-  getOrganization,
-  createOrganization,
-  deleteOrganization,
-  editOrganization,
-  listOrganizations,
-  addToOrganization,
-  removeFromOrganization,
 };

@@ -4,7 +4,7 @@ import {
   EditOrganizationDto,
   EditUserOnOrganizationDto,
 } from '@dtos/organization.dto';
-import { organizationService } from '@services/organization.service';
+import { organizationService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const getOrganization = async (req: Request, res: Response, next: NextFunction) => {
