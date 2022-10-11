@@ -1,17 +1,12 @@
 {
+  "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "tsx": false,
-      "dynamicImport": true,
-      "decorators": true
+      "tsx": false
     },
     "target": "es2022",
-    "loose": false,
-    "minify": {
-      "compress": false,
-      "mangle": false
-    },
+    "loose": true,
     "baseUrl": "src",
     "paths": {
       "@config/*": ["config/*"],
@@ -29,5 +24,6 @@
   },
   "module": {
     "type": "commonjs"
-  }
+  },
+  "minify": false
 }

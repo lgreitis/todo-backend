@@ -24,7 +24,7 @@ describe('Testing auth route', () => {
       expect(response.body.token).toBeDefined();
     });
 
-    it('Fails if email already exists', async () => {
+    it('Responds with 409 if email already exists', async () => {
       const data: CreateUserDto = {
         username: 'test123',
         password: 'test123',

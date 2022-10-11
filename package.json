@@ -20,7 +20,7 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "4.3.1",
+    "@prisma/client": "^4.4.0",
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -69,7 +69,7 @@
     "jest-mock-extended": "^3.0.1",
     "lint-staged": "^12.4.2",
     "prettier": "^2.6.2",
-    "prisma": "^4.3.1",
+    "prisma": "^4.4.0",
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.3",
     "ts-node": "^10.7.0",
