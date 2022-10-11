@@ -1,6 +1,5 @@
-import authRoute from './auth.route';
-import indexRoute from './index.route';
-import userRoute from './user.route';
-import directoryRoute from './directory.route';
+export { default as authRoute } from './auth.route';
+export { default as userRoute } from './user.route';
+export { default as indexRoute } from './index.route';
 
-export { indexRoute, authRoute, userRoute, directoryRoute };
+export { default as directoryRoute } from './directory.route';

@@ -1,6 +1,6 @@
 import { prisma } from '@config/prisma';
 import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 import { signToken } from '@utils/jwt';
 import { compare, hash } from 'bcrypt';
 
@@ -25,7 +25,7 @@ const register = async (data: CreateUserDto) => {
 };
 
 const login = async (data: LoginUserDto) => {
-  const findUser = await await prisma.user.findUnique({
+  const findUser = await prisma.user.findUnique({
     where: {
       email: data.email,
     },

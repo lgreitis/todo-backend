@@ -1,6 +1,6 @@
 import { LOG_DIR } from '@constants';
-import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { existsSync, mkdirSync } from 'node:fs';
+import { join } from 'node:path';
 import winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 
@@ -60,7 +60,7 @@ logger.add(
 
 const stream = {
   write: (message: string) => {
-    logger.info(message.substring(0, message.lastIndexOf('\n')));
+    logger.info(message.slice(0, Math.max(0, message.lastIndexOf('\n'))));
   },
 };
 

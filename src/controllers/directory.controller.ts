@@ -33,20 +33,20 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
 
     let item: File | Folder;
     switch (data.type) {
-      case ItemEnum.file:
+      case ItemEnum.file: {
         item = await fileService.addFile(data);
         break;
-      case ItemEnum.folder:
+      }
+      case ItemEnum.folder: {
         item = await folderService.addFolder(data);
         break;
+      }
     }
 
     let items: DirectoryItems[] = [];
-    if (item.parentId) {
-      items = (await directoryService.getChildren(item.parentId)) as DirectoryItems[];
-    } else {
-      items = (await directoryService.getRoot()) as DirectoryItems[];
-    }
+    items = item.parentId
+      ? ((await directoryService.getChildren(item.parentId)) as DirectoryItems[])
+      : ((await directoryService.getRoot()) as DirectoryItems[]);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -60,20 +60,20 @@ export const editItem = async (req: Request, res: Response, next: NextFunction) 
 
     let item: File | Folder;
     switch (data.type) {
-      case ItemEnum.file:
+      case ItemEnum.file: {
         item = await fileService.renameFile(data);
         break;
-      case ItemEnum.folder:
+      }
+      case ItemEnum.folder: {
         item = await folderService.renameFolder(data);
         break;
+      }
     }
 
     let items: DirectoryItems[] = [];
-    if (item.parentId) {
-      items = (await directoryService.getChildren(item.parentId)) as DirectoryItems[];
-    } else {
-      items = (await directoryService.getRoot()) as DirectoryItems[];
-    }
+    items = item.parentId
+      ? ((await directoryService.getChildren(item.parentId)) as DirectoryItems[])
+      : ((await directoryService.getRoot()) as DirectoryItems[]);
 
     res.status(200).send({ items });
   } catch (error) {

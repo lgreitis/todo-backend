@@ -23,9 +23,9 @@ const expressConfig = (routes: Routes[]) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
-  routes.forEach((route) => {
+  for (const route of routes) {
     app.use('/', route.router);
-  });
+  }
 
   app.use(errorMiddleware);
 

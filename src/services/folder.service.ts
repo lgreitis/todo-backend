@@ -1,6 +1,6 @@
 import { prisma } from '@config/prisma';
 import { CreateItemDto, EditItemDto } from '@dtos/directory.dto';
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 
 const addFolder = async (data: CreateItemDto) => {
   const folder = await prisma.folder.create({

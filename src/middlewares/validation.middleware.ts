@@ -1,4 +1,4 @@
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 import { RequestHandler } from 'express';
 import { AnyZodObject, ZodError } from 'zod';
 

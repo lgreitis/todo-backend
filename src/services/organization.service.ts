@@ -1,6 +1,6 @@
 import { prisma } from '@config/prisma';
 import { CreateOrganizationDto, EditOrganizationDto } from '@dtos/organization.dto';
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 import { userService } from './user.service';
 
 const getOrganization = async (userId: string, id: string) => {

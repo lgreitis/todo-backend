@@ -1,4 +1,4 @@
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 import { verifyToken } from '@utils/jwt';
 import { NextFunction, Request, Response } from 'express';
 
@@ -12,7 +12,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     const decoded = verifyToken(token);
     req.tokenData = decoded.id;
     next();
-  } catch (err) {
+  } catch {
     next(new HttpException(401, 'Invalid token'));
   }
 };

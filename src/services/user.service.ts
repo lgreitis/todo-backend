@@ -1,5 +1,5 @@
 import { prisma } from '@config/prisma';
-import { HttpException } from '@exceptions/HttpException';
+import { HttpException } from '@exceptions/httpException';
 
 const getById = async (id: string) => {
   const findUser = await prisma.user.findUnique({
@@ -34,7 +34,7 @@ const getUserOwnedOrganizations = async (id: string) => {
 const isUserInOrganization = async (userId: string, organizationId: string) => {
   const user = await userService.getUserOrganizations(userId);
 
-  if (!user.organizations.find((el) => el.id === organizationId)) {
+  if (!user.organizations.some((el) => el.id === organizationId)) {
     return false;
   }
 
@@ -44,7 +44,7 @@ const isUserInOrganization = async (userId: string, organizationId: string) => {
 const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
   const user = await userService.getUserOwnedOrganizations(userId);
 
-  if (!user.ownedOrganizations.find((el) => el.id === organizationId)) {
+  if (!user.ownedOrganizations.some((el) => el.id === organizationId)) {
     return false;
   }
 
