@@ -28,3 +28,12 @@ export const EditItemSchema = z
   .strict();
 
 export type EditItemDto = z.infer<typeof EditItemSchema>;
+
+export const RemoveItemSchema = z
+  .object({
+    type: ItemEnumSchema,
+    id: z.string(),
+  })
+  .strict();
+
+export type RemoveItemDto = z.infer<typeof RemoveItemSchema>;

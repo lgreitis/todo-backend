@@ -6,8 +6,11 @@ import { userService } from './user.service';
 const getOrganization = async (userId: string, id: string) => {
   const organization = await prisma.organization.findFirst({
     where: { id, users: { some: { id: userId } } },
-    include: {
+    select: {
+      id: true,
+      name: true,
       users: { select: { id: true, email: true, username: true } },
+      ownerUser: { select: { id: true, email: true, username: true } },
     },
   });
 
@@ -33,12 +36,15 @@ const deleteOrganization = async (userId: string, id: string) => {
   await prisma.organization.delete({ where: { id } });
 };
 
-const editOrganization = async (userId: string, id: string, data: EditOrganizationDto) => {
-  if (!(await userService.isUserOwnerOfOrganization(userId, id))) {
+const editOrganization = async (userId: string, data: EditOrganizationDto) => {
+  if (!(await userService.isUserOwnerOfOrganization(userId, data.id))) {
     throw new HttpException(401, 'Unauthorized');
   }
 
-  const organization = await prisma.organization.update({ where: { id }, data: { ...data } });
+  const organization = await prisma.organization.update({
+    where: { id: data.id },
+    data: { name: data.name },
+  });
 
   return organization;
 };
@@ -51,6 +57,23 @@ const addToOrganization = async (userId: string, ownerId: string, id: string) =>
   const organization = await prisma.organization.update({
     where: { id },
     data: { users: { connect: { id: userId } } },
+  });
+
+  return organization;
+};
+
+const removeFromOrganization = async (userId: string, ownerId: string, id: string) => {
+  if (!(await userService.isUserOwnerOfOrganization(ownerId, id))) {
+    throw new HttpException(401, 'Unauthorized');
+  }
+
+  if (userId === ownerId) {
+    throw new HttpException(400, "Can't remove owner from organization");
+  }
+
+  const organization = await prisma.organization.update({
+    where: { id },
+    data: { users: { disconnect: { id: userId } } },
   });
 
   return organization;
@@ -71,4 +94,5 @@ export const organizationService = {
   editOrganization,
   listOrganizations,
   addToOrganization,
+  removeFromOrganization,
 };

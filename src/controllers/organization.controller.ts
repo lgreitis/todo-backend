@@ -1,7 +1,8 @@
 import {
-  AddUserToOrganizationDto,
   CreateOrganizationDto,
+  DeleteOrganizationDto,
   EditOrganizationDto,
+  EditUserOnOrganizationDto,
 } from '@dtos/organization.dto';
 import { organizationService } from '@services/organization.service';
 import { NextFunction, Request, Response } from 'express';
@@ -47,10 +48,9 @@ export const listOrganizations = async (req: Request, res: Response, next: NextF
 export const editOrganization = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.tokenData;
-    const id = req.params.id;
     const data: EditOrganizationDto = req.body;
 
-    const organization = await organizationService.editOrganization(userId, id, data);
+    const organization = await organizationService.editOrganization(userId, data);
 
     res.status(200).send(organization);
   } catch (error) {
@@ -61,11 +61,45 @@ export const editOrganization = async (req: Request, res: Response, next: NextFu
 export const addUserToOrganization = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.tokenData;
-    const data: AddUserToOrganizationDto = req.body;
+    const data: EditUserOnOrganizationDto = req.body;
 
     const organization = await organizationService.addToOrganization(data.userId, userId, data.id);
 
     res.status(200).send(organization);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeUserFromOrganization = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.tokenData;
+    const data: EditUserOnOrganizationDto = req.body;
+
+    const organization = await organizationService.removeFromOrganization(
+      data.userId,
+      userId,
+      data.id
+    );
+
+    res.status(200).send(organization);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteOrganization = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.tokenData;
+    const data = req.params as DeleteOrganizationDto;
+
+    await organizationService.deleteOrganization(userId, data.id);
+
+    res.status(200).send();
   } catch (error) {
     next(error);
   }

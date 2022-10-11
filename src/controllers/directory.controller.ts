@@ -1,5 +1,4 @@
-import { CreateItemDto, EditItemDto, ItemEnum } from '@dtos/directory.dto';
-import { DirectoryItems } from '@interfaces/directory.interface';
+import { CreateItemDto, EditItemDto, ItemEnum, RemoveItemDto } from '@dtos/directory.dto';
 import { File, Folder } from '@prisma/client';
 import { directoryService } from '@services/directory.service';
 import { fileService } from '@services/file.service';
@@ -43,10 +42,7 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
       }
     }
 
-    let items: DirectoryItems[] = [];
-    items = item.parentId
-      ? ((await directoryService.getChildren(item.parentId)) as DirectoryItems[])
-      : ((await directoryService.getRoot()) as DirectoryItems[]);
+    const items = await directoryService.get(item.parentId);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -70,12 +66,30 @@ export const editItem = async (req: Request, res: Response, next: NextFunction) 
       }
     }
 
-    let items: DirectoryItems[] = [];
-    items = item.parentId
-      ? ((await directoryService.getChildren(item.parentId)) as DirectoryItems[])
-      : ((await directoryService.getRoot()) as DirectoryItems[]);
+    const items = await directoryService.get(item.parentId);
 
     res.status(200).send({ items });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeItem = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.params as RemoveItemDto;
+
+    switch (data.type) {
+      case ItemEnum.file: {
+        await fileService.removeFile(data);
+        break;
+      }
+      case ItemEnum.folder: {
+        await folderService.removeFolder(data);
+        break;
+      }
+    }
+
+    res.status(200).send();
   } catch (error) {
     next(error);
   }

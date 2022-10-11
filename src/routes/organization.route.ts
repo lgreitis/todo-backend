@@ -1,8 +1,9 @@
 import { organizationController } from '@controllers';
 import {
-  AddUserToOrganizationSchema,
   CreateOrganizationSchema,
+  DeleteOrganizationSchema,
   EditOrganizationSchema,
+  EditUserOnOrganizationSchema,
   GetOrganizationSchema,
 } from '@dtos/organization.dto';
 import { authMiddleware } from '@middlewares/authentication.middleware';
@@ -30,7 +31,7 @@ router.post(
 router.get(`${path}`, authMiddleware, organizationController.listOrganizations);
 
 router.patch(
-  `${path}/:id`,
+  `${path}`,
   authMiddleware,
   validationMiddleware(EditOrganizationSchema, 'body'),
   organizationController.editOrganization
@@ -39,8 +40,22 @@ router.patch(
 router.post(
   `${path}/add`,
   authMiddleware,
-  validationMiddleware(AddUserToOrganizationSchema, 'body'),
+  validationMiddleware(EditUserOnOrganizationSchema, 'body'),
   organizationController.addUserToOrganization
+);
+
+router.post(
+  `${path}/remove`,
+  authMiddleware,
+  validationMiddleware(EditUserOnOrganizationSchema, 'body'),
+  organizationController.removeUserFromOrganization
+);
+
+router.delete(
+  `${path}/:id`,
+  authMiddleware,
+  validationMiddleware(DeleteOrganizationSchema, 'params'),
+  organizationController.deleteOrganization
 );
 
 export default { router, path };

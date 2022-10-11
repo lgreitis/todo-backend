@@ -32,23 +32,19 @@ const getUserOwnedOrganizations = async (id: string) => {
 };
 
 const isUserInOrganization = async (userId: string, organizationId: string) => {
-  const user = await userService.getUserOrganizations(userId);
+  const organization = await prisma.organization.findFirst({
+    where: { users: { some: { id: userId } }, id: organizationId },
+  });
 
-  if (!user.organizations.some((el) => el.id === organizationId)) {
-    return false;
-  }
-
-  return true;
+  return organization ? true : false;
 };
 
 const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
-  const user = await userService.getUserOwnedOrganizations(userId);
+  const organization = await prisma.organization.findFirst({
+    where: { ownerUserId: userId, id: organizationId },
+  });
 
-  if (!user.ownedOrganizations.some((el) => el.id === organizationId)) {
-    return false;
-  }
-
-  return true;
+  return organization ? true : false;
 };
 
 export const userService = {

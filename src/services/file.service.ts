@@ -1,5 +1,5 @@
 import { prisma } from '@config/prisma';
-import { CreateItemDto, EditItemDto } from '@dtos/directory.dto';
+import { CreateItemDto, EditItemDto, RemoveItemDto } from '@dtos/directory.dto';
 
 const addFile = async (data: CreateItemDto) => {
   const file = await prisma.file.create({
@@ -18,4 +18,8 @@ const renameFile = async (data: EditItemDto) => {
   return folder;
 };
 
-export const fileService = { addFile, renameFile };
+const removeFile = async (data: RemoveItemDto) => {
+  await prisma.file.delete({ where: { id: data.id } });
+};
+
+export const fileService = { addFile, renameFile, removeFile };

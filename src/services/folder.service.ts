@@ -1,5 +1,5 @@
 import { prisma } from '@config/prisma';
-import { CreateItemDto, EditItemDto } from '@dtos/directory.dto';
+import { CreateItemDto, EditItemDto, RemoveItemDto } from '@dtos/directory.dto';
 import { HttpException } from '@exceptions/httpException';
 
 const addFolder = async (data: CreateItemDto) => {
@@ -29,4 +29,9 @@ const getFolder = async (id: string) => {
   return folder;
 };
 
-export const folderService = { addFolder, renameFolder, getFolder };
+const removeFolder = async (data: RemoveItemDto) => {
+  console.log('here');
+  await prisma.folder.delete({ where: { id: data.id } });
+};
+
+export const folderService = { addFolder, renameFolder, getFolder, removeFolder };

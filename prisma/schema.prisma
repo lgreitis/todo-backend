@@ -34,11 +34,11 @@ model Folder {
   name  String
   files File[]
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
 
   childrenFolders Folder[] @relation("FolderHierarcy")
-  parent          Folder?  @relation("FolderHierarcy", fields: [parentId], references: [id])
+  parent          Folder?  @relation("FolderHierarcy", fields: [parentId], references: [id], onDelete: Cascade)
   parentId        String?
 }
 
@@ -46,10 +46,10 @@ model File {
   id       String  @id @default(uuid())
   name     String
   parentId String?
+  data     String  @default("")
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
 
-  Folder Folder? @relation(fields: [parentId], references: [id])
-  data   String  @default("")
+  Folder Folder? @relation(fields: [parentId], references: [id], onDelete: Cascade)
 }

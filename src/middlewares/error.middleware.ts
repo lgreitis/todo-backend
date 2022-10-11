@@ -7,7 +7,8 @@ const errorMiddleware = (error: HttpException, req: Request, res: Response, next
     let status = error.status;
     let message = error.message;
 
-    // Don't leak internal error to the user
+    // Since error type isn't exactly true
+    // we don't want to leak the stack trace :)
     if (!(error instanceof HttpException)) {
       status = 500;
       message = 'Internal server error';
