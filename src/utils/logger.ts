@@ -52,11 +52,13 @@ const logger = winston.createLogger({
   ],
 });
 
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
-  })
-);
+if (process.env.NODE_ENV === 'development') {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(winston.format.splat(), winston.format.colorize()),
+    })
+  );
+}
 
 const stream = {
   write: (message: string) => {

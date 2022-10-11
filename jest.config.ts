@@ -7,6 +7,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   transform: { '^.+\\.tsx?$': 'ts-jest' },
+  setupFilesAfterEnv: ['./src/tests/mocks.ts'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src' }),
 };
 
