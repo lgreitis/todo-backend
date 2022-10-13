@@ -1,34 +1,34 @@
 import { prisma } from '@config/prisma';
 import { DirectoryItems } from '@interfaces/directory.interface';
 
-export const getRoot = async () => {
+export const getRoot = async (organizationId: string) => {
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
     from "Folder" f 
-    where f."parentId" is null
+    where f."parentId" is null and f."organizationId" = ${organizationId}
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" is null`;
+    where f2."parentId" is null and f."organizationId" = ${organizationId}`;
 
   return items;
 };
 
-export const getChildren = async (id: string) => {
+export const getChildren = async (id: string, organizationId: string) => {
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
     from "Folder" f 
-    where f."parentId" = ${id}
+    where f."parentId" = ${id} and f."organizationId" = ${organizationId}
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" = ${id}`;
+    where f2."parentId" = ${id} and f."organizationId" = ${organizationId}`;
 
   return items;
 };
 
-export const get = async (id: string | null) => {
-  return await (id ? getChildren(id) : getRoot());
+export const get = async (id: string | null, organizationId: string) => {
+  return await (id ? getChildren(id, organizationId) : getRoot(organizationId));
 };

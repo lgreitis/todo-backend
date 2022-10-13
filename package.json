@@ -10,7 +10,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
     "build:tsc": "tsc && tsc-alias",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "test:coverage": "yarn test --coverage",
     "lint": "tsc --noEmit && eslint --ignore-path .gitignore --ext .ts src/",
     "lint:fix": "eslint --fix --ignore-path .gitignore --ext .ts src/",

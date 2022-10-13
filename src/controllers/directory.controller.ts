@@ -1,11 +1,19 @@
-import { CreateItemDto, EditItemDto, ItemEnum, RemoveItemDto } from '@dtos/directory.dto';
+import {
+  CreateItemDto,
+  EditItemDto,
+  GetDirectoryChildrenDto,
+  GetDirectoryRootDto,
+  ItemEnum,
+  RemoveItemDto,
+} from '@dtos/directory.dto';
 import { File, Folder } from '@prisma/client';
 import { directoryService, fileService, folderService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const meta = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const items = await directoryService.getRoot();
+    const params = req.params as GetDirectoryRootDto;
+    const items = await directoryService.getRoot(params.organizationId);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -15,8 +23,8 @@ export const meta = async (req: Request, res: Response, next: NextFunction) => {
 
 export const getChildren = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const params = req.params;
-    const items = await directoryService.getChildren(params.parentId);
+    const params = req.params as GetDirectoryChildrenDto;
+    const items = await directoryService.getChildren(params.parentId, params.organizationId);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -40,7 +48,7 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
       }
     }
 
-    const items = await directoryService.get(item.parentId);
+    const items = await directoryService.get(item.parentId, data.organizationId);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -64,7 +72,7 @@ export const editItem = async (req: Request, res: Response, next: NextFunction) 
       }
     }
 
-    const items = await directoryService.get(item.parentId);
+    const items = await directoryService.get(item.parentId, item.organizationId);
 
     res.status(200).send({ items });
   } catch (error) {

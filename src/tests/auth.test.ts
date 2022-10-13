@@ -22,6 +22,8 @@ describe('Testing auth route', () => {
       const response = await request(server).post('/auth/register').send(data);
       expect(response.status).toEqual(200);
       expect(response.body.token).toBeDefined();
+      expect(response.body.username).toBeDefined();
+      expect(response.body.email).toBeDefined();
     });
 
     it('Responds with 409 if email already exists', async () => {

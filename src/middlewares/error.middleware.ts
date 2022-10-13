@@ -1,17 +1,24 @@
 import { HttpException } from '@exceptions/httpException';
+import { SyntaxError } from '@interfaces/error.interface';
 import { logger } from '@utils/logger';
 import { NextFunction, Request, Response } from 'express';
 
-const errorMiddleware = (error: HttpException, req: Request, res: Response, next: NextFunction) => {
+const errorMiddleware = (
+  error: HttpException | Error | SyntaxError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    let status = error.status;
-    let message = error.message;
+    let status = 500;
+    let message = 'Internal server error';
 
-    // Since error type isn't exactly true
-    // we don't want to leak the stack trace :)
-    if (!(error instanceof HttpException)) {
-      status = 500;
-      message = 'Internal server error';
+    if (error instanceof HttpException) {
+      status = error.status;
+      message = error.message;
+    } else if ('type' in error && error.type === 'entity.parse.failed') {
+      status = error.status;
+      message = error.message;
     }
 
     logger.error(

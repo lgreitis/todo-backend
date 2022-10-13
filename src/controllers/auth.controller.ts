@@ -7,7 +7,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const data: LoginUserDto = req.body;
     const token = await authService.login(data);
 
-    res.status(200).send({ token });
+    res.status(200).send(token);
   } catch (error) {
     next(error);
   }
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const data: CreateUserDto = req.body;
     const token = await authService.register(data);
 
-    res.status(200).send({ token });
+    res.status(200).send(token);
   } catch (error) {
     next(error);
   }

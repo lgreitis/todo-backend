@@ -1,12 +1,26 @@
 import expressConfig from '@config/express';
 import { NODE_ENV, PORT } from '@constants';
-import { authRoute, indexRoute, userRoute, directoryRoute, organizationRoute } from '@routes';
+import {
+  authRoute,
+  indexRoute,
+  userRoute,
+  directoryRoute,
+  organizationRoute,
+  inviteRoute,
+} from '@routes';
 import { logger } from '@utils/logger';
 import * as http from 'node:http';
 import { prisma } from './config/prisma';
 
 const startServer = async () => {
-  const app = expressConfig([authRoute, userRoute, indexRoute, directoryRoute, organizationRoute]);
+  const app = expressConfig([
+    authRoute,
+    userRoute,
+    indexRoute,
+    directoryRoute,
+    organizationRoute,
+    inviteRoute,
+  ]);
   const httpServer = http.createServer(app);
 
   httpServer.listen(PORT, () => {

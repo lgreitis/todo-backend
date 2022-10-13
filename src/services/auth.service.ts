@@ -17,11 +17,12 @@ export const register = async (data: CreateUserDto) => {
 
   const createUserData = await prisma.user.create({
     data: { email: data.email, username: data.username, password: hashedPassword },
+    select: { email: true, username: true, id: true },
   });
 
-  const token = signToken(createUserData.id);
+  const token = await signToken(createUserData.id);
 
-  return token;
+  return { token, ...createUserData };
 };
 
 export const login = async (data: LoginUserDto) => {

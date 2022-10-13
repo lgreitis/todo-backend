@@ -46,3 +46,7 @@ export const isUserOwnerOfOrganization = async (userId: string, organizationId: 
 
   return organization ? true : false;
 };
+
+export const removeUser = async (userId: string) => {
+  await prisma.user.delete({ where: { id: userId } });
+};

@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
-export const GetDirectoryChildrenSchema = z.object({ parentId: z.string() }).strict();
+export const GetDirectoryRootSchema = z.object({ organizationId: z.string() }).strict();
+
+export type GetDirectoryRootDto = z.infer<typeof GetDirectoryRootSchema>;
+
+export const GetDirectoryChildrenSchema = z
+  .object({ parentId: z.string(), organizationId: z.string() })
+  .strict();
 
 export type GetDirectoryChildrenDto = z.infer<typeof GetDirectoryChildrenSchema>;
 

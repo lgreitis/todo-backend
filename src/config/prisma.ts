@@ -12,3 +12,11 @@ export const prisma = new PrismaClient({
 // prisma.$on('query', async (e) => {
 //   console.log(`${e.query} ${e.params}`);
 // });
+
+// Some random workaround to BigInt in prisma
+// Prisma... why are you like this?
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};

@@ -3,6 +3,7 @@ import {
   CreateItemSchema,
   EditItemSchema,
   GetDirectoryChildrenSchema,
+  GetDirectoryRootSchema,
   RemoveItemSchema,
 } from '@dtos/directory.dto';
 import validationMiddleware from '@middlewares/validation.middleware';
@@ -12,10 +13,14 @@ const router = Router();
 
 const path = '/directory';
 
-router.get(`${path}/`, directoryController.meta);
+router.get(
+  `${path}/:organizationId`,
+  validationMiddleware(GetDirectoryRootSchema, 'params'),
+  directoryController.meta
+);
 
 router.get(
-  `${path}/:parentId`,
+  `${path}/:organizationId/:parentId`,
   validationMiddleware(GetDirectoryChildrenSchema, 'params'),
   directoryController.getChildren
 );

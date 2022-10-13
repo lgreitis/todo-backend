@@ -4,3 +4,4 @@ export * as fileService from './file.service';
 export * as folderService from './folder.service';
 export * as organizationService from './organization.service';
 export * as userService from './user.service';
+export * as inviteService from './invite.service';

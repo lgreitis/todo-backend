@@ -17,6 +17,7 @@ export const getOrganization = async (userId: string, id: string) => {
   if (!organization) {
     throw new HttpException(404, 'Organization not found');
   }
+
   return organization;
 };
 

@@ -34,3 +34,11 @@ afterEach(async () => {
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE;`);
   await prisma.$disconnect();
 });
+
+// Some random workaround to BigInt in prisma
+// Prisma... why are you like this?
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
