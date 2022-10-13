@@ -10,7 +10,7 @@ export const getRoot = async (organizationId: string) => {
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" is null and f."organizationId" = ${organizationId}`;
+    where f2."parentId" is null and f2."organizationId" = ${organizationId}`;
 
   return items;
 };
@@ -24,7 +24,7 @@ export const getChildren = async (id: string, organizationId: string) => {
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" = ${id} and f."organizationId" = ${organizationId}`;
+    where f2."parentId" = ${id} and f2."organizationId" = ${organizationId}`;
 
   return items;
 };
