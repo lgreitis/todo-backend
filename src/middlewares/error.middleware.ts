@@ -24,13 +24,13 @@ const errorMiddleware = (
     } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // Generic prisma errors
       switch (error.code) {
-        // Fkey error
+        // Foreign key constraint failed
         case 'P2003': {
           status = 400;
           message = 'Bad Request';
           break;
         }
-        // Record not found error
+        // An operation failed because it depends on one or more records that were required but not found.
         case 'P2025': {
           status = 404;
           message = 'Not Found';
