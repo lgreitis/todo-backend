@@ -24,11 +24,13 @@ const errorMiddleware = (
     } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // Generic prisma errors
       switch (error.code) {
+        // Fkey error
         case 'P2003': {
           status = 400;
           message = 'Bad Request';
           break;
         }
+        // Record not found error
         case 'P2025': {
           status = 404;
           message = 'Not Found';

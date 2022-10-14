@@ -43,3 +43,11 @@ export const RemoveItemSchema = z
   .strict();
 
 export type RemoveItemDto = z.infer<typeof RemoveItemSchema>;
+
+export const GetFileSchema = z.object({
+  folderId: z.string(),
+  organizationId: z.string(),
+  fileId: z.string(),
+});
+
+export type GetFileDto = z.infer<typeof GetFileSchema>;

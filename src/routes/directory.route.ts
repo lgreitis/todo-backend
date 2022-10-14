@@ -4,6 +4,7 @@ import {
   EditItemSchema,
   GetDirectoryChildrenSchema,
   GetDirectoryRootSchema,
+  GetFileSchema,
   RemoveItemSchema,
 } from '@dtos/directory.dto';
 import { authMiddleware } from '@middlewares/authentication.middleware';
@@ -19,6 +20,14 @@ router.get(
   authMiddleware,
   validationMiddleware(GetDirectoryRootSchema, 'params'),
   directoryController.meta
+);
+
+// TODO: change to just /directory/file/:fileId
+router.get(
+  `${path}/organization/:organizationId/folder/:folderId/file/:fileId`,
+  authMiddleware,
+  validationMiddleware(GetFileSchema, 'params'),
+  directoryController.getFile
 );
 
 router.get(
