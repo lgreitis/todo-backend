@@ -1,4 +1,4 @@
-# TODO:
+# TODO
 
 ## Lauching:
 
@@ -11,7 +11,7 @@
    1. `yarn start` to start production server
    1. `pm2 start ecosystem.config.js --only prod` to start a clusterized server with `pm2` process manager
 
-## Routes
+## Routes:
 
 - Index routes `/`
 - Auth routes `/auth`
