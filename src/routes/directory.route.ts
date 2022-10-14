@@ -31,6 +31,13 @@ router.get(
 );
 
 router.get(
+  `${path}/all/:organizationId`,
+  authMiddleware,
+  validationMiddleware(GetDirectoryRootSchema, 'params'),
+  directoryController.getAll
+);
+
+router.get(
   `${path}/:organizationId/:parentId`,
   authMiddleware,
   validationMiddleware(GetDirectoryChildrenSchema, 'params'),

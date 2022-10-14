@@ -33,6 +33,17 @@ export const getFile = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
+export const getAll = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const params = req.params as GetDirectoryRootDto;
+    const items = await directoryService.getAll(params.organizationId, req.tokenData);
+
+    res.status(200).send({ items });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getChildren = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetDirectoryChildrenDto;

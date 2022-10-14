@@ -3,6 +3,26 @@ import { HttpException } from '@exceptions/httpException';
 import { DirectoryItems } from '@interfaces/directory.interface';
 import { userService } from '@services';
 
+export const getAll = async (organizationId: string, userId: string) => {
+  const userInOrganization = await userService.isUserInOrganization(userId, organizationId);
+
+  if (!userInOrganization) {
+    throw new HttpException(404, 'Organization not found');
+  }
+
+  const items = await prisma.$queryRaw<
+    DirectoryItems[]
+  >`select f.id, f."name", f."parentId", 'folder' as "type" 
+    from "Folder" f 
+    where f."organizationId" = ${organizationId}
+    union 
+    select f2.id, f2."name", f2."parentId", 'file' as "type" 
+    from "File" f2
+    where f2."organizationId" = ${organizationId}`;
+
+  return items;
+};
+
 export const getRoot = async (organizationId: string, userId: string) => {
   const userInOrganization = await userService.isUserInOrganization(userId, organizationId);
 
