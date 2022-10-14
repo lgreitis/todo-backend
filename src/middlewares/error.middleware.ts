@@ -1,5 +1,6 @@
 import { HttpException } from '@exceptions/httpException';
 import { SyntaxError } from '@interfaces/error.interface';
+import { Prisma } from '@prisma/client';
 import { logger } from '@utils/logger';
 import { NextFunction, Request, Response } from 'express';
 
@@ -17,8 +18,23 @@ const errorMiddleware = (
       status = error.status;
       message = error.message;
     } else if ('type' in error && error.type === 'entity.parse.failed') {
+      // If json body parse failed
       status = error.status;
       message = error.message;
+    } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      // Generic prisma errors
+      switch (error.code) {
+        case 'P2003': {
+          status = 400;
+          message = 'Bad Request';
+          break;
+        }
+        case 'P2025': {
+          status = 404;
+          message = 'Not Found';
+          break;
+        }
+      }
     }
 
     logger.error(

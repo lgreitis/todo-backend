@@ -13,7 +13,7 @@ import { NextFunction, Request, Response } from 'express';
 export const meta = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetDirectoryRootDto;
-    const items = await directoryService.getRoot(params.organizationId);
+    const items = await directoryService.getRoot(params.organizationId, req.tokenData);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -24,7 +24,11 @@ export const meta = async (req: Request, res: Response, next: NextFunction) => {
 export const getChildren = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetDirectoryChildrenDto;
-    const items = await directoryService.getChildren(params.parentId, params.organizationId);
+    const items = await directoryService.getChildren(
+      params.parentId,
+      params.organizationId,
+      req.tokenData
+    );
 
     res.status(200).send({ items });
   } catch (error) {
@@ -48,7 +52,7 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
       }
     }
 
-    const items = await directoryService.get(item.parentId, data.organizationId);
+    const items = await directoryService.get(item.parentId, data.organizationId, req.tokenData);
 
     res.status(200).send({ items });
   } catch (error) {
@@ -72,7 +76,7 @@ export const editItem = async (req: Request, res: Response, next: NextFunction) 
       }
     }
 
-    const items = await directoryService.get(item.parentId, item.organizationId);
+    const items = await directoryService.get(item.parentId, item.organizationId, req.tokenData);
 
     res.status(200).send({ items });
   } catch (error) {

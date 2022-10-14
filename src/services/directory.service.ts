@@ -1,7 +1,15 @@
 import { prisma } from '@config/prisma';
+import { HttpException } from '@exceptions/httpException';
 import { DirectoryItems } from '@interfaces/directory.interface';
+import { userService } from '@services';
 
-export const getRoot = async (organizationId: string) => {
+export const getRoot = async (organizationId: string, userId: string) => {
+  const userInOrganization = await userService.isUserInOrganization(userId, organizationId);
+
+  if (!userInOrganization) {
+    throw new HttpException(404, 'Organization not found');
+  }
+
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
@@ -15,7 +23,13 @@ export const getRoot = async (organizationId: string) => {
   return items;
 };
 
-export const getChildren = async (id: string, organizationId: string) => {
+export const getChildren = async (id: string, organizationId: string, userId: string) => {
+  const userInOrganization = await userService.isUserInOrganization(userId, organizationId);
+
+  if (!userInOrganization) {
+    throw new HttpException(404, 'Organization not found');
+  }
+
   const items = await prisma.$queryRaw<
     DirectoryItems[]
   >`select f.id, f."name", f."parentId", 'folder' as "type" 
@@ -29,6 +43,6 @@ export const getChildren = async (id: string, organizationId: string) => {
   return items;
 };
 
-export const get = async (id: string | null, organizationId: string) => {
-  return await (id ? getChildren(id, organizationId) : getRoot(organizationId));
+export const get = async (id: string | null, organizationId: string, userId: string) => {
+  return await (id ? getChildren(id, organizationId, userId) : getRoot(organizationId, userId));
 };
