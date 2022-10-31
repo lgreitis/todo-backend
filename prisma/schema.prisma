@@ -18,6 +18,9 @@ model User {
 
   invite   Invite? @relation(fields: [inviteId], references: [id])
   inviteId String?
+
+  @@index([username], type: Hash)
+  @@index([email], type: Hash)
 }
 
 model Organization {
@@ -31,6 +34,8 @@ model Organization {
   folders Folder[]
   files   File[]
   invites Invite[]
+
+  @@index([ownerUserId], type: Hash)
 }
 
 model Invite {

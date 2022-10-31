@@ -6,7 +6,8 @@
     "plugin:unicorn/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:security/recommended"
   ],
   "parserOptions": {
     "parserOptions": {

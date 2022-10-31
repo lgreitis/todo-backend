@@ -1,34 +1,41 @@
-import expressConfig from '@config/express';
-import { NODE_ENV, PORT } from '@constants';
-import {
-  authRoute,
-  indexRoute,
-  userRoute,
-  directoryRoute,
-  organizationRoute,
-  inviteRoute,
-} from '@routes';
-import { logger } from '@utils/logger';
-import * as http from 'node:http';
+// import expressConfig from '@config/express';
+import hocuspocusConfig from '@config/hocuspocus';
+// import { NODE_ENV, PORT } from '@constants';
+// import {
+//   authRoute,
+//   indexRoute,
+//   userRoute,
+//   directoryRoute,
+//   organizationRoute,
+//   inviteRoute,
+// } from '@routes';
+// import { serve } from 'swagger-ui-express';
+// import { logger } from '@utils/logger';
+// import * as http from 'node:http';
+// import { serve } from 'swagger-ui-express';
 import { prisma } from './config/prisma';
 
 const startServer = async () => {
-  const app = expressConfig([
-    authRoute,
-    userRoute,
-    indexRoute,
-    directoryRoute,
-    organizationRoute,
-    inviteRoute,
-  ]);
-  const httpServer = http.createServer(app);
+  // const app = expressConfig([
+  //   authRoute,
+  //   userRoute,
+  //   indexRoute,
+  //   directoryRoute,
+  //   organizationRoute,
+  //   inviteRoute,
+  // ]);
+  // const httpServer = http.createServer(app);
+  const hocuspocusServer = hocuspocusConfig();
 
-  httpServer.listen(PORT, () => {
-    logger.info(`=================================`);
-    logger.info(`ENV: ${NODE_ENV}`);
-    logger.info(`PORT: ${PORT}`);
-    logger.info(`=================================`);
-  });
+  // const server = hocuspocusServer.httpServer;
+  await hocuspocusServer.listen();
+
+  // httpServer.listen(PORT, () => {
+  //   logger.info(`=================================`);
+  //   logger.info(`ENV: ${NODE_ENV}`);
+  //   logger.info(`PORT: ${PORT}`);
+  //   logger.info(`=================================`);
+  // });
 };
 
 startServer()

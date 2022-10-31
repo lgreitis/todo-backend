@@ -36,6 +36,10 @@ const errorMiddleware = (
           message = 'Not Found';
           break;
         }
+        default: {
+          logger.error(`Unhandled prisma error: ${error.code}`);
+          break;
+        }
       }
     }
 

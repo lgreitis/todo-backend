@@ -8,6 +8,7 @@ const validationMiddleware = (
 ): RequestHandler => {
   return (req, res, next) => {
     try {
+      // eslint-disable-next-line security/detect-object-injection
       schema.parse(req[value]);
       next();
     } catch (error) {
