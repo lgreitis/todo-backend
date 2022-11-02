@@ -1,8 +1,8 @@
 {
-  "name": "omphalos",
+  "name": "todo-backend",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/lgreitis/omphalos.git",
+  "repository": "https://github.com/lgreitis/todo-backend.git",
   "author": "Lukas Greičius <lgreicius@protonmail.com>",
   "license": "MIT",
   "scripts": {

@@ -39,7 +39,7 @@ const swaggerConfig = (app: express.Application) => {
     definition: {
       openapi: '3.0.0',
       info: {
-        title: 'OMPHALOS backend',
+        title: 'TODO backend',
         version: '1.0.0',
       },
     },
