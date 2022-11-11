@@ -1,7 +1,6 @@
 import { HttpException } from '@exceptions/httpException';
 import jwt from 'jsonwebtoken';
 
-// export const signToken = (id: string, expiresIn: string) => {
 export const signToken = (
   id: string,
   role: string,

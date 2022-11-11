@@ -250,5 +250,66 @@ describe('Testing invite route', () => {
       expect(response.body.disabled).toEqual(true);
       expect(response.body.expirationDate).toEqual(expDate.toString());
     });
+
+    it('Creates and tries to edit the invite unprivileged everyting else is unchanged', async () => {
+      const createUserData: CreateUserDto = {
+        username: 'test123',
+        password: 'test123',
+        email: 'test@test.com',
+      };
+
+      const user = await request(server).post('/auth/register').send(createUserData);
+
+      const createOrganizationData: CreateOrganizationDto = { name: 'testOrg' };
+
+      const organization = await request(server)
+        .post('/organization')
+        .set('authorization', 'Bearer ' + user.body.accessToken)
+        .send(createOrganizationData);
+
+      const expDateUnchanged = Date.now();
+
+      const inviteCreateData: CreateInviteDto = {
+        organizationId: organization.body.id,
+        expirationDate: expDateUnchanged,
+      };
+
+      const invite = await request(server)
+        .post('/invite')
+        .set('authorization', 'Bearer ' + user.body.accessToken)
+        .send(inviteCreateData);
+
+      const expDate = Date.now();
+
+      const createUser2Data: CreateUserDto = {
+        username: 'test222',
+        password: 'test123',
+        email: 'test2@test.com',
+      };
+
+      const user2 = await request(server).post('/auth/register').send(createUser2Data);
+
+      const editInviteData: EditInviteDto = {
+        id: invite.body.id,
+        disabled: true,
+        expirationDate: expDate,
+      };
+
+      const response = await request(server)
+        .patch('/invite')
+        .set('Content-Type', 'application/json')
+        .set('authorization', 'Bearer ' + user2.body.accessToken)
+        .send(editInviteData);
+
+      expect(response.status).toEqual(404);
+      expect(response.body.message).toEqual('Organization not found');
+
+      const getInvite = await request(server)
+        .get(`/invite/${invite.body.id}`)
+        .set('authorization', 'Bearer ' + user.body.accessToken);
+
+      expect(getInvite.body.disabled).toEqual(false);
+      expect(getInvite.body.expirationDate).toEqual(expDateUnchanged.toString());
+    });
   });
 });

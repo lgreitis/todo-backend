@@ -31,13 +31,13 @@ model User {
 }
 
 model UserToken {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  token  String
+  id           String @id @default(uuid())
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+  refreshToken String
 
   @@index([userId], type: Hash)
-  @@index([token], type: Hash)
+  @@index([refreshToken], type: Hash)
 }
 
 model Organization {
