@@ -23,3 +23,11 @@ export const RegenerateTokensSchema = z
   .strict();
 
 export type RegenerateTokensDto = z.infer<typeof RegenerateTokensSchema>;
+
+const RoleEnumSchema = z.enum(['USER', 'SUPERADMIN']);
+
+export const RoleEnum = RoleEnumSchema.Enum;
+
+export const ChangeRoleSchema = z.object({ role: RoleEnumSchema, userId: z.string() }).strict();
+
+export type ChangeRoleDto = z.infer<typeof ChangeRoleSchema>;

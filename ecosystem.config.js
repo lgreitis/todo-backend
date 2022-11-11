@@ -48,11 +48,12 @@ module.exports = {
   ],
   deploy: {
     production: {
-      user: 'user',
-      host: '0.0.0.0',
-      ref: 'origin/master',
-      repo: 'git@github.com:repo.git',
-      path: 'dist/index.js',
+      key: "/Users/lgreitis/todo",
+      user: 'root',
+      host: '134.209.86.90',
+      ref: 'origin/main',
+      repo: 'git@github.com:lgreitis/todo-backend.git',
+      path: '/root/todo-backend',
       'post-deploy': 'yarn install && yarn build && pm2 reload ecosystem.config.js --only prod',
     },
   },

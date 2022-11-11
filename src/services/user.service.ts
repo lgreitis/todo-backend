@@ -1,4 +1,5 @@
 import { prisma } from '@config/prisma';
+import { ChangeRoleDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/httpException';
 import { logger } from '@utils/logger';
 
@@ -78,4 +79,10 @@ export const isUserOwnerOfOrganization = async (userId: string, organizationId: 
 
 export const removeUser = async (userId: string) => {
   await prisma.user.delete({ where: { id: userId } });
+};
+
+export const changeRole = async (data: ChangeRoleDto) => {
+  await prisma.userToken.deleteMany({ where: { userId: data.userId } });
+
+  return prisma.user.update({ where: { id: data.userId }, data: { role: data.role } });
 };

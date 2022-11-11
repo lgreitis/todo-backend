@@ -49,6 +49,10 @@ const swaggerConfig = (app: express.Application) => {
   const openapiSpecification = swaggerJsdoc(options);
 
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(openapiSpecification));
+
+  app.use(function (req, res) {
+    res.status(404).send({ message: 'Page not found' });
+  });
 };
 
 export default expressConfig;

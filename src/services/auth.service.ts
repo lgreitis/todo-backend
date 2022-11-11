@@ -70,7 +70,7 @@ export const regenerateTokens = async (data: RegenerateTokensDto) => {
 };
 
 const generateTokens = async (id: string, role: string) => {
-  const accessToken = await signToken(id, role, JWT_SECRET, '30s');
+  const accessToken = await signToken(id, role, JWT_SECRET, '14m');
   const refreshToken = await signToken(id, role, REFRESH_JWT_SECRET, '30d');
 
   await prisma.userToken.create({ data: { userId: id, token: refreshToken } });

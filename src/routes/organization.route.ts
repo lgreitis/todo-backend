@@ -7,19 +7,13 @@ import {
   GetOrganizationSchema,
 } from '@dtos/organization.dto';
 import { authMiddleware } from '@middlewares/authentication.middleware';
+import { roleMiddleware } from '@middlewares/authorization.middleware';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { Router } from 'express';
 
 const router = Router();
 
 const path = '/organization';
-
-router.get(
-  `${path}/:id`,
-  authMiddleware,
-  validationMiddleware(GetOrganizationSchema, 'params'),
-  organizationController.getOrganization
-);
 
 router.post(
   `${path}`,
@@ -29,6 +23,20 @@ router.post(
 );
 
 router.get(`${path}`, authMiddleware, organizationController.listOrganizations);
+
+router.get(
+  `${path}/superadmin`,
+  authMiddleware,
+  roleMiddleware(['SUPERADMIN']),
+  organizationController.listAllOrganizations
+);
+
+router.get(
+  `${path}/:id`,
+  authMiddleware,
+  validationMiddleware(GetOrganizationSchema, 'params'),
+  organizationController.getOrganization
+);
 
 router.patch(
   `${path}`,

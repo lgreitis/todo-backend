@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
-export const CreateOrganizationSchema = z.object({ name: z.string().min(2) }).strict();
+export const CreateOrganizationSchema = z
+  .object({ name: z.string().min(2), userId: z.string().optional() })
+  .strict();
 
 export type CreateOrganizationDto = z.infer<typeof CreateOrganizationSchema>;
 

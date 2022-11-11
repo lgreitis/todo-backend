@@ -21,6 +21,24 @@ export const getOrganization = async (userId: string, id: string) => {
   return organization;
 };
 
+export const getOrganizationAdmin = async (id: string) => {
+  const organization = await prisma.organization.findFirst({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      users: { select: { id: true, email: true, username: true } },
+      ownerUser: { select: { id: true, email: true, username: true } },
+    },
+  });
+
+  if (!organization) {
+    throw new HttpException(404, 'Organization not found');
+  }
+
+  return organization;
+};
+
 export const createOrganization = async (userId: string, data: CreateOrganizationDto) => {
   const organization = await prisma.organization.create({
     data: { name: data.name, ownerUserId: userId, users: { connect: { id: userId } } },
@@ -84,6 +102,12 @@ export const listOrganizations = async (userId: string) => {
   const organizations = await prisma.organization.findMany({
     where: { users: { some: { id: userId } } },
   });
+
+  return organizations;
+};
+
+export const listAllOrganizations = async () => {
+  const organizations = await prisma.organization.findMany();
 
   return organizations;
 };
