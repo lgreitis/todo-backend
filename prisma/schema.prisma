@@ -7,20 +7,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  SUPERADMIN
+}
+
 model User {
   id       String @id @default(uuid())
   email    String @unique
   username String
   password String
+  role     Role
 
   organizations      Organization[] @relation("organizations")
   ownedOrganizations Organization[] @relation("ownedOrganizations")
 
-  invite   Invite? @relation(fields: [inviteId], references: [id])
-  inviteId String?
+  invite    Invite?     @relation(fields: [inviteId], references: [id])
+  inviteId  String?
+  UserToken UserToken[]
 
   @@index([username], type: Hash)
   @@index([email], type: Hash)
+}
+
+model UserToken {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  token  String
+
+  @@index([userId], type: Hash)
+  @@index([token], type: Hash)
 }
 
 model Organization {

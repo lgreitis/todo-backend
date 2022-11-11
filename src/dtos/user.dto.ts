@@ -15,3 +15,11 @@ export const LoginUserSchema = z
   .strict();
 
 export type LoginUserDto = z.infer<typeof LoginUserSchema>;
+
+export const RegenerateTokensSchema = z
+  .object({
+    refreshToken: z.string(),
+  })
+  .strict();
+
+export type RegenerateTokensDto = z.infer<typeof RegenerateTokensSchema>;

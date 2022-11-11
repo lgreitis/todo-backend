@@ -32,7 +32,7 @@ describe('Testing invite route', () => {
 
       const organization = await request(server)
         .post('/organization')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createOrganizationData);
 
       const inviteCreateData: CreateInviteDto = {
@@ -42,12 +42,12 @@ describe('Testing invite route', () => {
 
       const invite = await request(server)
         .post('/invite')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(inviteCreateData);
 
       const getInvite = await request(server)
         .get(`/invite/${invite.body.id}`)
-        .set('authorization', 'Bearer ' + user.body.token);
+        .set('authorization', 'Bearer ' + user.body.accessToken);
 
       expect(getInvite.body.id).toEqual(invite.body.id);
       expect(getInvite.body.disabled).toEqual(invite.body.disabled);
@@ -71,7 +71,7 @@ describe('Testing invite route', () => {
 
       const organization = await request(server)
         .post('/organization')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createOrganizationData);
 
       for (let i = 0; i < 10; i++) {
@@ -82,13 +82,13 @@ describe('Testing invite route', () => {
 
         await request(server)
           .post('/invite')
-          .set('authorization', 'Bearer ' + user.body.token)
+          .set('authorization', 'Bearer ' + user.body.accessToken)
           .send(inviteCreateData);
       }
 
       const invites = await request(server)
         .get(`/invite/organization/${organization.body.id}`)
-        .set('authorization', 'Bearer ' + user.body.token);
+        .set('authorization', 'Bearer ' + user.body.accessToken);
 
       expect(invites.status).toEqual(200);
       expect(invites.body.length).toEqual(10);
@@ -114,7 +114,7 @@ describe('Testing invite route', () => {
 
       const organization = await request(server)
         .post('/organization')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createOrganizationData);
 
       const inviteCreateData: CreateInviteDto = {
@@ -124,7 +124,7 @@ describe('Testing invite route', () => {
 
       const invite = await request(server)
         .post('/invite')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(inviteCreateData);
 
       const createInvitedUserData: CreateInvitedUserDto = {
@@ -136,17 +136,18 @@ describe('Testing invite route', () => {
 
       const response = await request(server)
         .post('/invite/createUser')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createInvitedUserData);
 
       expect(response.status).toEqual(200);
-      expect(response.body.token).toBeDefined();
+      expect(response.body.accessToken).toBeDefined();
+      expect(response.body.refreshToken).toBeDefined();
       expect(response.body.username).toBeDefined();
       expect(response.body.email).toBeDefined();
 
       const organizationResponse = await request(server)
         .get(`/organization/${organization.body.id}`)
-        .set('authorization', 'Bearer ' + user.body.token);
+        .set('authorization', 'Bearer ' + user.body.accessToken);
 
       expect(organizationResponse.body.users.length).toEqual(2);
     });
@@ -166,7 +167,7 @@ describe('Testing invite route', () => {
 
       const organization = await request(server)
         .post('/organization')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createOrganizationData);
 
       const inviteCreateData: CreateInviteDto = {
@@ -176,7 +177,7 @@ describe('Testing invite route', () => {
 
       const invite = await request(server)
         .post('/invite')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(inviteCreateData);
 
       const createUser2Data: CreateUserDto = {
@@ -191,14 +192,14 @@ describe('Testing invite route', () => {
 
       const response = await request(server)
         .post('/invite/addUser')
-        .set('authorization', 'Bearer ' + user2.body.token)
+        .set('authorization', 'Bearer ' + user2.body.accessToken)
         .send(addUserFromInviteData);
 
       expect(response.status).toEqual(200);
 
       const organizationResponse = await request(server)
         .get(`/organization/${organization.body.id}`)
-        .set('authorization', 'Bearer ' + user.body.token);
+        .set('authorization', 'Bearer ' + user.body.accessToken);
 
       expect(organizationResponse.body.users.length).toEqual(2);
     });
@@ -218,7 +219,7 @@ describe('Testing invite route', () => {
 
       const organization = await request(server)
         .post('/organization')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(createOrganizationData);
 
       const inviteCreateData: CreateInviteDto = {
@@ -228,7 +229,7 @@ describe('Testing invite route', () => {
 
       const invite = await request(server)
         .post('/invite')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(inviteCreateData);
 
       const expDate = Date.now();
@@ -242,7 +243,7 @@ describe('Testing invite route', () => {
       const response = await request(server)
         .patch('/invite')
         .set('Content-Type', 'application/json')
-        .set('authorization', 'Bearer ' + user.body.token)
+        .set('authorization', 'Bearer ' + user.body.accessToken)
         .send(editInviteData);
 
       expect(response.status).toEqual(200);

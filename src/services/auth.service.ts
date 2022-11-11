@@ -1,7 +1,8 @@
 import { prisma } from '@config/prisma';
-import { CreateUserDto, LoginUserDto } from '@dtos/user.dto';
+import { JWT_SECRET, REFRESH_JWT_SECRET } from '@constants';
+import { CreateUserDto, LoginUserDto, RegenerateTokensDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/httpException';
-import { signToken } from '@utils/jwt';
+import { signToken, verifyToken } from '@utils/jwt';
 import { compare, hash } from 'bcrypt';
 
 export const register = async (data: CreateUserDto) => {
@@ -16,13 +17,18 @@ export const register = async (data: CreateUserDto) => {
   const hashedPassword = await hash(data.password, 10);
 
   const createUserData = await prisma.user.create({
-    data: { email: data.email, username: data.username, password: hashedPassword },
-    select: { email: true, username: true, id: true },
+    data: {
+      email: data.email,
+      username: data.username,
+      password: hashedPassword,
+      role: 'USER',
+    },
+    select: { email: true, username: true, id: true, role: true },
   });
 
-  const token = await signToken(createUserData.id);
+  const tokens = await generateTokens(createUserData.id, createUserData.role);
 
-  return { token, ...createUserData };
+  return { ...tokens, ...createUserData };
 };
 
 export const login = async (data: LoginUserDto) => {
@@ -37,7 +43,37 @@ export const login = async (data: LoginUserDto) => {
   const isPasswordMatching = await compare(data.password, findUser.password);
   if (!isPasswordMatching) throw new HttpException(400, 'Failed to login');
 
-  const token = await signToken(findUser.id);
+  const tokens = await generateTokens(findUser.id, findUser.role);
 
-  return token;
+  return tokens;
+};
+
+export const regenerateTokens = async (data: RegenerateTokensDto) => {
+  const verified = await verifyToken(data.refreshToken, REFRESH_JWT_SECRET);
+  const findUser = await prisma.user.findUnique({ where: { id: verified.id } });
+
+  if (!findUser) {
+    throw new HttpException(400, "User doesn't exist");
+  }
+
+  const findToken = await prisma.userToken.findMany({ where: { token: data.refreshToken } });
+
+  if (findToken.length === 0) {
+    throw new HttpException(400, 'Bad refresh token');
+  }
+
+  await prisma.userToken.deleteMany({ where: { token: data.refreshToken } });
+
+  const tokens = await generateTokens(findUser.id, findUser.role);
+
+  return tokens;
+};
+
+const generateTokens = async (id: string, role: string) => {
+  const accessToken = await signToken(id, role, JWT_SECRET, '30s');
+  const refreshToken = await signToken(id, role, REFRESH_JWT_SECRET, '30d');
+
+  await prisma.userToken.create({ data: { userId: id, token: refreshToken } });
+
+  return { accessToken, refreshToken };
 };

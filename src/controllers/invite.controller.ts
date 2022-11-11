@@ -67,7 +67,7 @@ export const createInviteUser = async (req: Request, res: Response, next: NextFu
 
 export const addUserFromInvite = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = req.tokenData;
+    const userId = req.tokenData.id;
     const data = req.body as AddUserFromInviteDto;
     await inviteService.addUserFromInvite(userId, data.inviteId);
 

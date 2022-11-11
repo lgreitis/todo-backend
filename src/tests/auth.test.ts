@@ -21,7 +21,8 @@ describe('Testing auth route', () => {
 
       const response = await request(server).post('/auth/register').send(data);
       expect(response.status).toEqual(200);
-      expect(response.body.token).toBeDefined();
+      expect(response.body.accessToken).toBeDefined();
+      expect(response.body.refreshToken).toBeDefined();
       expect(response.body.username).toBeDefined();
       expect(response.body.email).toBeDefined();
     });

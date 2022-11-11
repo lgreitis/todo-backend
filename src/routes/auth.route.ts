@@ -1,5 +1,5 @@
 import { authController } from '@controllers';
-import { CreateUserSchema, LoginUserSchema } from '@dtos/user.dto';
+import { CreateUserSchema, LoginUserSchema, RegenerateTokensSchema } from '@dtos/user.dto';
 import validationMiddleware from '@middlewares/validation.middleware';
 import { Router } from 'express';
 
@@ -13,6 +13,12 @@ router.post(
   `${path}/register`,
   validationMiddleware(CreateUserSchema, 'body'),
   authController.register
+);
+
+router.post(
+  `${path}/regenerateToken`,
+  validationMiddleware(RegenerateTokensSchema, 'body'),
+  authController.regenerateToken
 );
 
 export default { router, path };
