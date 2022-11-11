@@ -1,5 +1,6 @@
 import { prisma } from '@config/prisma';
 import { HttpException } from '@exceptions/httpException';
+import { logger } from '@utils/logger';
 
 export const getById = async (id: string) => {
   const findUser = await prisma.user.findUnique({
@@ -31,18 +32,46 @@ export const getUserOwnedOrganizations = async (id: string) => {
   return user;
 };
 
+// Authorization function
 export const isUserInOrganization = async (userId: string, organizationId: string) => {
   const organization = await prisma.organization.findFirst({
     where: { users: { some: { id: userId } }, id: organizationId },
   });
 
+  if (!organization) {
+    const foundUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (foundUser && foundUser.role === 'SUPERADMIN') {
+      return true;
+    }
+  }
+
   return organization ? true : false;
 };
 
+// Authorization function
+export const isUserInOrganizationOrThrow = async (userId: string, organizationId: string) => {
+  const organization = await isUserInOrganization(userId, organizationId);
+
+  if (!organization) {
+    logger.error(`${userId} tried to access ${organizationId} resources without privileges`);
+    throw new HttpException(404, 'Organization not found');
+  }
+
+  return organization ? true : false;
+};
+
+// Authorization function
 export const isUserOwnerOfOrganization = async (userId: string, organizationId: string) => {
   const organization = await prisma.organization.findFirst({
     where: { ownerUserId: userId, id: organizationId },
   });
+
+  if (!organization) {
+    const foundUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (foundUser && foundUser.role === 'SUPERADMIN') {
+      return true;
+    }
+  }
 
   return organization ? true : false;
 };

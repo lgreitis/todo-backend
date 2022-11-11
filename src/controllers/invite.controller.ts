@@ -1,3 +1,4 @@
+import { userController } from '@controllers';
 import {
   AddUserFromInviteDto,
   CreateInviteDto,
@@ -6,13 +7,16 @@ import {
   GetAllInvitesDto,
   GetInviteDto,
 } from '@dtos/invite.dto';
-import { inviteService } from '@services';
+import { inviteService, userService } from '@services';
 
 import { NextFunction, Request, Response } from 'express';
 
 export const getAllInvites = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetAllInvitesDto;
+
+    await userService.isUserInOrganizationOrThrow(req.tokenData.id, params.organizationId);
+
     const invite = await inviteService.getAllInvites(params.organizationId);
 
     res.status(200).send(invite);
@@ -46,6 +50,7 @@ export const createInvite = async (req: Request, res: Response, next: NextFuncti
 export const editInvite = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body as EditInviteDto;
+    await inviteService.hasInviteEditPrivilegesOrThrow(req.tokenData.id, data.id);
     const invite = await inviteService.editInvite(data);
 
     res.status(200).send(invite);

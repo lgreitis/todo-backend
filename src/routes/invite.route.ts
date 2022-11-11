@@ -45,7 +45,6 @@ router.patch(
 
 router.post(
   `${path}/createUser`,
-  authMiddleware,
   validationMiddleware(CreateInvitedUserSchema, 'body'),
   inviteController.createInviteUser
 );

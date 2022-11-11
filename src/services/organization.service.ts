@@ -31,7 +31,7 @@ export const createOrganization = async (userId: string, data: CreateOrganizatio
 
 export const deleteOrganization = async (userId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(userId, id))) {
-    throw new HttpException(401, 'Unauthorized');
+    throw new HttpException(404, 'Organization not found');
   }
 
   await prisma.organization.delete({ where: { id } });
@@ -39,7 +39,7 @@ export const deleteOrganization = async (userId: string, id: string) => {
 
 export const editOrganization = async (userId: string, data: EditOrganizationDto) => {
   if (!(await userService.isUserOwnerOfOrganization(userId, data.id))) {
-    throw new HttpException(401, 'Unauthorized');
+    throw new HttpException(404, 'Organization not found');
   }
 
   const organization = await prisma.organization.update({
@@ -52,7 +52,7 @@ export const editOrganization = async (userId: string, data: EditOrganizationDto
 
 export const addToOrganization = async (userId: string, ownerId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(ownerId, id))) {
-    throw new HttpException(401, 'Unauthorized');
+    throw new HttpException(404, 'Organization not found');
   }
 
   const organization = await prisma.organization.update({
@@ -65,7 +65,7 @@ export const addToOrganization = async (userId: string, ownerId: string, id: str
 
 export const removeFromOrganization = async (userId: string, ownerId: string, id: string) => {
   if (!(await userService.isUserOwnerOfOrganization(ownerId, id))) {
-    throw new HttpException(401, 'Unauthorized');
+    throw new HttpException(404, 'Organization not found');
   }
 
   if (userId === ownerId) {

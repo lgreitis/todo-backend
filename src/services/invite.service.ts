@@ -1,7 +1,8 @@
 import { prisma } from '@config/prisma';
 import { CreateInviteDto, CreateInvitedUserDto, EditInviteDto } from '@dtos/invite.dto';
 import { HttpException } from '@exceptions/httpException';
-import { authService } from '@services';
+import { authService, userService } from '@services';
+import { logger } from '@utils/logger';
 
 export const getAllInvites = async (organizationId: string) => {
   const invites = await prisma.invite.findMany({ where: { organizationId: organizationId } });
@@ -101,4 +102,18 @@ const connectUser = async (userId: string, inviteId: string, organizationId: str
     where: { id: userId },
     data: { organizations: { connect: { id: organizationId } } },
   });
+};
+
+// Authorization function
+export const hasInviteEditPrivilegesOrThrow = async (userId: string, inviteId: string) => {
+  const findInvite = await prisma.invite.findUnique({ where: { id: inviteId } });
+
+  if (!findInvite) {
+    // Throwing organization not found because isUserInOrganizationOrThrow returns organization not found error
+    // Adding logger error so it would be easier to debug
+    logger.error(`${userId} tried to access ${inviteId} invite without privileges`);
+    throw new HttpException(404, 'Organization not found');
+  }
+
+  await userService.isUserInOrganizationOrThrow(userId, findInvite.organizationId);
 };

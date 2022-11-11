@@ -8,7 +8,7 @@ import {
   RemoveItemDto,
 } from '@dtos/directory.dto';
 import { File, Folder } from '@prisma/client';
-import { directoryService, fileService, folderService } from '@services';
+import { directoryService, fileService, folderService, userService } from '@services';
 import { NextFunction, Request, Response } from 'express';
 
 export const meta = async (req: Request, res: Response, next: NextFunction) => {
@@ -25,6 +25,9 @@ export const meta = async (req: Request, res: Response, next: NextFunction) => {
 export const getFile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetFileDto;
+
+    await userService.isUserInOrganizationOrThrow(req.tokenData.id, params.organizationId);
+
     const items = await fileService.getFile(params);
 
     res.status(200).send(items);
@@ -63,6 +66,8 @@ export const createItem = async (req: Request, res: Response, next: NextFunction
   try {
     const data: CreateItemDto = req.body;
 
+    await userService.isUserInOrganizationOrThrow(req.tokenData.id, data.organizationId);
+
     let item: File | Folder;
     switch (data.type) {
       case ItemEnum.file: {
@@ -90,10 +95,12 @@ export const editItem = async (req: Request, res: Response, next: NextFunction) 
     let item: File | Folder;
     switch (data.type) {
       case ItemEnum.file: {
+        await fileService.userHasAccessOrThrow(req.tokenData.id, data.id);
         item = await fileService.renameFile(data);
         break;
       }
       case ItemEnum.folder: {
+        await folderService.userHasAccessOrThrow(req.tokenData.id, data.id);
         item = await folderService.renameFolder(data);
         break;
       }
@@ -113,10 +120,12 @@ export const removeItem = async (req: Request, res: Response, next: NextFunction
 
     switch (data.type) {
       case ItemEnum.file: {
+        await fileService.userHasAccessOrThrow(req.tokenData.id, data.id);
         await fileService.removeFile(data);
         break;
       }
       case ItemEnum.folder: {
+        await folderService.userHasAccessOrThrow(req.tokenData.id, data.id);
         await folderService.removeFolder(data);
         break;
       }

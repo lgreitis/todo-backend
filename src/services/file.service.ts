@@ -1,6 +1,7 @@
 import { prisma } from '@config/prisma';
 import { CreateItemDto, EditItemDto, GetFileDto, RemoveItemDto } from '@dtos/directory.dto';
 import { HttpException } from '@exceptions/httpException';
+import { userService } from '@services';
 
 export const addFile = async (data: CreateItemDto) => {
   const file = await prisma.file.create({
@@ -33,4 +34,36 @@ export const getFile = async (data: GetFileDto) => {
   }
 
   return file;
+};
+
+// Authorization function
+export const userHasAccessToFile = async (userId: string, fileId: string) => {
+  const file = await prisma.file.findFirst({ where: { id: fileId } });
+
+  if (!file) {
+    const foundUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (foundUser && foundUser.role === 'SUPERADMIN') {
+      return true;
+    }
+
+    throw new HttpException(404, 'Organization does not exist');
+  }
+
+  return await userService.isUserInOrganization(userId, file.organizationId);
+};
+
+// Authorization function
+export const userHasAccessOrThrow = async (userId: string, fileId: string) => {
+  const res = await userHasAccessToFile(userId, fileId);
+
+  if (!res) {
+    const foundUser = await prisma.user.findUnique({ where: { id: userId } });
+    if (foundUser && foundUser.role === 'SUPERADMIN') {
+      return true;
+    }
+
+    throw new HttpException(404, 'Organization does not exist');
+  }
+
+  return res;
 };
