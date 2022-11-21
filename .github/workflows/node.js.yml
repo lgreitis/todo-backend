@@ -21,10 +21,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Setup PostgreSQL
+      uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql db: test
+        postgresql user: test
+        postgresql password: test
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      env:
+        DATABASE_URL: postgresql://test:test@localhost:5432/test
     - run: yarn
     - run: yarn test
