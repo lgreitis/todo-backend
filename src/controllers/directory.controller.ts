@@ -118,20 +118,25 @@ export const removeItem = async (req: Request, res: Response, next: NextFunction
   try {
     const data = req.params as RemoveItemDto;
 
+    let item: File | Folder;
     switch (data.type) {
       case ItemEnum.file: {
         await fileService.userHasAccessOrThrow(req.tokenData.id, data.id);
+        item = await fileService.getFileById(data.id);
         await fileService.removeFile(data);
         break;
       }
       case ItemEnum.folder: {
         await folderService.userHasAccessOrThrow(req.tokenData.id, data.id);
+        item = await folderService.getFolder(data.id);
         await folderService.removeFolder(data);
         break;
       }
     }
 
-    res.status(200).send();
+    const items = await directoryService.get(item.parentId, item.organizationId, req.tokenData.id);
+
+    res.status(200).send({ items });
   } catch (error) {
     next(error);
   }

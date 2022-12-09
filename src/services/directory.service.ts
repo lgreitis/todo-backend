@@ -18,7 +18,8 @@ export const getAll = async (organizationId: string, userId: string) => {
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."organizationId" = ${organizationId}`;
+    where f2."organizationId" = ${organizationId}
+    order by name`;
 
   return items;
 };
@@ -38,7 +39,8 @@ export const getRoot = async (organizationId: string, userId: string) => {
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" is null and f2."organizationId" = ${organizationId}`;
+    where f2."parentId" is null and f2."organizationId" = ${organizationId}
+    order by "type" desc, name`;
 
   return items;
 };
@@ -58,7 +60,8 @@ export const getChildren = async (id: string, organizationId: string, userId: st
     union 
     select f2.id, f2."name", f2."parentId", 'file' as "type" 
     from "File" f2
-    where f2."parentId" = ${id} and f2."organizationId" = ${organizationId}`;
+    where f2."parentId" = ${id} and f2."organizationId" = ${organizationId}
+    order by "type" desc, name`;
 
   return items;
 };

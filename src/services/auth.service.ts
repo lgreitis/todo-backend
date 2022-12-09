@@ -12,7 +12,7 @@ export const register = async (data: CreateUserDto) => {
     },
   });
 
-  if (findUser) throw new HttpException(409, 'User already exists');
+  if (findUser) throw new HttpException(409, 'Failed to register, user already exists');
 
   const hashedPassword = await hash(data.password, 10);
 
@@ -38,10 +38,12 @@ export const login = async (data: LoginUserDto) => {
     },
   });
 
-  if (!findUser) throw new HttpException(400, 'Failed to login');
+  if (!findUser)
+    throw new HttpException(400, 'Failed to login, please check your email and password');
 
   const isPasswordMatching = await compare(data.password, findUser.password);
-  if (!isPasswordMatching) throw new HttpException(400, 'Failed to login');
+  if (!isPasswordMatching)
+    throw new HttpException(400, 'Failed to login, please check your email and password');
 
   const tokens = await generateTokens(findUser.id, findUser.role);
 
@@ -86,7 +88,7 @@ export const regenerateTokens = async (data: RegenerateTokensDto) => {
 // };
 
 const generateTokens = async (id: string, role: string) => {
-  const accessToken = await signToken(id, role, JWT_SECRET, '14m');
+  const accessToken = await signToken(id, role, JWT_SECRET, '1h');
   const refreshToken = await signToken(id, role, REFRESH_JWT_SECRET, '30d');
 
   await prisma.userToken.create({ data: { userId: id, refreshToken: refreshToken } });

@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn build && cross-env NODE_ENV=production node dist/index.js",
+    "start:hocuspocus": "yarn build && cross-env NODE_ENV=production PORT=3001 node dist/hocuspocus.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "build": "swc src -d dist --source-maps --copy-files",
     "build:tsc": "tsc && tsc-alias",
@@ -20,8 +21,8 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@hocuspocus/extension-database": "^1.0.0-beta.2",
-    "@hocuspocus/server": "^1.0.0-beta.2",
+    "@hocuspocus/extension-database": "^1.0.0-beta.6",
+    "@hocuspocus/server": "^1.0.0-beta.6",
     "@prisma/client": "^4.4.0",
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",
@@ -40,6 +41,7 @@
     "uuid": "^9.0.0",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.6.1",
+    "yjs": "^13.5.43",
     "zod": "^3.19.1"
   },
   "devDependencies": {

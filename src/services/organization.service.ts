@@ -42,6 +42,12 @@ export const getOrganizationAdmin = async (id: string) => {
 export const createOrganization = async (userId: string, data: CreateOrganizationDto) => {
   const organization = await prisma.organization.create({
     data: { name: data.name, ownerUserId: userId, users: { connect: { id: userId } } },
+    select: {
+      id: true,
+      name: true,
+      _count: { select: { files: true, users: true } },
+      ownerUser: { select: { username: true } },
+    },
   });
 
   return organization;
@@ -101,13 +107,24 @@ export const removeFromOrganization = async (userId: string, ownerId: string, id
 export const listOrganizations = async (userId: string) => {
   const organizations = await prisma.organization.findMany({
     where: { users: { some: { id: userId } } },
+    include: {
+      _count: { select: { files: true, users: true } },
+      ownerUser: { select: { username: true } },
+    },
+    orderBy: { name: 'asc' },
   });
 
   return organizations;
 };
 
 export const listAllOrganizations = async () => {
-  const organizations = await prisma.organization.findMany();
+  const organizations = await prisma.organization.findMany({
+    include: {
+      _count: { select: { files: true, users: true } },
+      ownerUser: { select: { username: true } },
+    },
+    orderBy: { name: 'asc' },
+  });
 
   return organizations;
 };

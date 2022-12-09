@@ -5,13 +5,22 @@ import { authService, userService } from '@services';
 import { logger } from '@utils/logger';
 
 export const getAllInvites = async (organizationId: string) => {
-  const invites = await prisma.invite.findMany({ where: { organizationId: organizationId } });
+  const invites = await prisma.invite.findMany({
+    where: { organizationId: organizationId },
+    include: {
+      organization: { select: { name: true } },
+      _count: { select: { usersInvited: true } },
+    },
+  });
 
   return invites;
 };
 
 export const getInvite = async (id: string) => {
-  const invite = await prisma.invite.findUnique({ where: { id } });
+  const invite = await prisma.invite.findUnique({
+    where: { id },
+    include: { organization: { select: { name: true } } },
+  });
 
   if (!invite) {
     throw new HttpException(404, "Couldn't find an invite");

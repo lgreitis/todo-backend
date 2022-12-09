@@ -7,6 +7,7 @@ import {
   GetInviteDto,
 } from '@dtos/invite.dto';
 import { inviteService, userService } from '@services';
+import sleep from '@utils/sleep';
 
 import { NextFunction, Request, Response } from 'express';
 
@@ -25,8 +26,10 @@ export const getAllInvites = async (req: Request, res: Response, next: NextFunct
 export const getInvite = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const params = req.params as GetInviteDto;
-    await inviteService.hasInviteEditPrivilegesOrThrow(req.tokenData.id, params.id);
+    // await inviteService.hasInviteEditPrivilegesOrThrow(req.tokenData.id, params.id);
     const invite = await inviteService.getInvite(params.id);
+
+    await sleep(1000);
 
     res.status(200).send(invite);
   } catch (error) {

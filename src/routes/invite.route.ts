@@ -24,7 +24,6 @@ router.get(
 
 router.get(
   `${path}/:id`,
-  authMiddleware,
   validationMiddleware(GetInviteSchema, 'params'),
   inviteController.getInvite
 );

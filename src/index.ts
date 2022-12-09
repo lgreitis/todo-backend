@@ -25,13 +25,10 @@ const startServer = async () => {
     inviteRoute,
   ]);
   const httpServer = http.createServer(app);
-  // const hocuspocusServer = hocuspocusConfig();
-
-  // const server = hocuspocusServer.httpServer;
-  // await hocuspocusServer.listen();
 
   httpServer.listen(PORT, () => {
     logger.info(`=================================`);
+    logger.info(`SERVER: API`);
     logger.info(`ENV: ${NODE_ENV}`);
     logger.info(`PORT: ${PORT}`);
     logger.info(`=================================`);

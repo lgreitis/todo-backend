@@ -1,10 +1,13 @@
 import { ChangeRoleDto } from '@dtos/user.dto';
 import { userService } from '@services';
+import sleep from '@utils/sleep';
 import { NextFunction, Request, Response } from 'express';
 
 export const getMeta = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await userService.getById(req.tokenData.id);
+
+    await sleep(1000);
 
     res.status(200).send(user);
   } catch (error) {

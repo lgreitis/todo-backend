@@ -11,6 +11,13 @@ export const addFile = async (data: CreateItemDto) => {
   return file;
 };
 
+export const setFileData = async (fileId: string, data: string) => {
+  await prisma.file.update({
+    where: { id: fileId },
+    data: { data: data },
+  });
+};
+
 export const renameFile = async (data: EditItemDto) => {
   const folder = await prisma.file.update({
     data: { name: data.name },
@@ -27,6 +34,18 @@ export const removeFile = async (data: RemoveItemDto) => {
 export const getFile = async (data: GetFileDto) => {
   const file = await prisma.file.findFirst({
     where: { organizationId: data.organizationId, parentId: data.folderId, id: data.fileId },
+  });
+
+  if (!file) {
+    throw new HttpException(404, 'File does not exist');
+  }
+
+  return file;
+};
+
+export const getFileById = async (fileId: string) => {
+  const file = await prisma.file.findFirst({
+    where: { id: fileId },
   });
 
   if (!file) {

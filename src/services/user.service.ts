@@ -6,7 +6,7 @@ import { logger } from '@utils/logger';
 export const getById = async (id: string) => {
   const findUser = await prisma.user.findUnique({
     where: { id: id },
-    select: { username: true, email: true, id: true },
+    select: { username: true, email: true, id: true, role: true },
   });
 
   if (!findUser) throw new HttpException(400, 'Failed to retrieve user');
