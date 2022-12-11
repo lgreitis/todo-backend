@@ -1,0 +1,25 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 300
+      arrivalCount: 15000
+scenarios:
+  - name: Load test
+    flow:
+      - post:
+          url: "/auth/register"
+          json:
+            username: "{{ $randomString(8) }}"
+            password: "{{ $randomString(8) }}"
+            email: "{{ $randomString(10) }}@{{ $randomString(10) }}.com"
+          capture:
+            json: "$.accessToken"
+            as: "token"
+      - get:
+          url: "/user"
+          headers:
+            authorization: "Bearer {{token}}"
+      - get:
+          url: '/organization'
+          headers:
+            authorization: 'Bearer {{token}}'

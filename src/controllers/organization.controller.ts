@@ -5,7 +5,6 @@ import {
   EditUserOnOrganizationDto,
 } from '@dtos/organization.dto';
 import { organizationService } from '@services';
-import sleep from '@utils/sleep';
 import { NextFunction, Request, Response } from 'express';
 
 export const getOrganization = async (req: Request, res: Response, next: NextFunction) => {
@@ -45,8 +44,6 @@ export const listOrganizations = async (req: Request, res: Response, next: NextF
     const userId = req.tokenData.id;
 
     const organization = await organizationService.listOrganizations(userId);
-
-    await sleep(1000);
 
     res.status(200).send(organization);
   } catch (error) {

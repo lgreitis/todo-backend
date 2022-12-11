@@ -203,6 +203,25 @@ describe('Testing invite route', () => {
 
       expect(organizationResponse.body.users.length).toEqual(2);
     });
+
+    it('Throws error if bad invite id', async () => {
+      const createUserData: CreateUserDto = {
+        username: 'test123',
+        password: 'test123',
+        email: 'test@test.com',
+      };
+
+      const user = await request(server).post('/auth/register').send(createUserData);
+
+      const addUserFromInviteData: AddUserFromInviteDto = { inviteId: 'BadInviteId' };
+
+      const response = await request(server)
+        .post('/invite/addUser')
+        .set('authorization', 'Bearer ' + user.body.accessToken)
+        .send(addUserFromInviteData);
+
+      expect(response.status).toEqual(400);
+    });
   });
 
   describe('[PATCH] /invite', () => {

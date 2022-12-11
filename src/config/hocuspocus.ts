@@ -11,18 +11,20 @@ const hocuspocusConfig = () => {
       new Database({
         store: async (data) => {
           try {
-            console.log('saving', data.documentName);
+            console.log('saving', data.documentName.replace('hocuspocus/', ''));
             const serializedData = data.state.toString('base64');
-            fileService.setFileData(data.documentName, serializedData);
+            fileService.setFileData(data.documentName.replace('hocuspocus/', ''), serializedData);
           } catch (error) {
             logger.error(error);
           }
         },
         fetch: async (data) => {
-          console.log('loading data', data.documentName);
-          const file = await fileService.getFileById(data.documentName).catch((error) => {
-            logger.error(error);
-          });
+          console.log('loading data', data.documentName.replace('hocuspocus/', ''));
+          const file = await fileService
+            .getFileById(data.documentName.replace('hocuspocus/', ''))
+            .catch((error) => {
+              logger.error(error);
+            });
           // eslint-disable-next-line unicorn/no-null
           return file && file.data ? Uint8Array.from(Buffer.from(file.data, 'base64')) : null;
         },
