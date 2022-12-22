@@ -19,6 +19,8 @@
 1. Run `pm2 startup` and `pm2 save` to setup automatic server start on system reboot/poweroff
    - Other times after changing cluster size or other options you only have to run `pm2 save` command
 
+---
+
 ## 1. Sprendžiamo uždavinio aprašymas
 
 ### 1.1. Sistemos paskirtis
@@ -63,6 +65,8 @@ Administratorius galės:
 1. Peržiūrėti, šalinti ir keisti naudotojus;
 1. Peržiūrėti, šalinti ir keisti komandas;
 
+---
+
 ## 2. Sistemos architektūra
 
 Sistemos sudedamosios dalys:
@@ -72,3 +76,5 @@ Sistemos sudedamosios dalys:
   PostgreSQL. Klusterizacijos valdytojas – pm2. Reverse proxy serveris – nginx.
 
 ![Sistemos TODO diegimo diagrama](/docs/images/Sistemos_TODO_diegimo_diagrama.png 'Sistemos TODO diegimo diagrama')
+
+---
