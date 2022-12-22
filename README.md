@@ -122,9 +122,10 @@ Github repozitorija: https://github.com/lgreitis/todo-client
    ![Vartotojo nustatymų komponentas](/docs/images/Settings.png)
 
 1. Hamburger meniu komponentas
+
    ![Hamburger meniu komponentas wireframe](/docs/images/Hamburger_Wireframe.png)
    ![Hamburger meniu komponentas](/docs/images/Hamburger.png)
 
 ## 4. API specifikacija
 
-## 4. Išvados
+## 5. Išvados
