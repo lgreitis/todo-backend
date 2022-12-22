@@ -8,6 +8,7 @@
     "target": "es2022",
     "loose": true,
     "baseUrl": "src",
+   
     "paths": {
       "@config/*": ["config/*"],
       "@controllers": ["controllers"],
@@ -22,6 +23,7 @@
       "@utils/*": ["utils/*"]
     }
   },
+  "sourceMaps": true,
   "module": {
     "type": "commonjs"
   },
