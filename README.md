@@ -19,8 +19,6 @@
 1. Run `pm2 startup` and `pm2 save` to setup automatic server start on system reboot/poweroff
    - Other times after changing cluster size or other options you only have to run `pm2 save` command
 
----
-
 ## 1. Sprendžiamo uždavinio aprašymas
 
 ### 1.1. Sistemos paskirtis
@@ -65,8 +63,6 @@ Administratorius galės:
 1. Peržiūrėti, šalinti ir keisti naudotojus;
 1. Peržiūrėti, šalinti ir keisti komandas;
 
----
-
 ## 2. Sistemos architektūra
 
 Sistemos sudedamosios dalys:
@@ -77,4 +73,58 @@ Sistemos sudedamosios dalys:
 
 ![Sistemos TODO diegimo diagrama](/docs/images/Sistemos_TODO_diegimo_diagrama.png 'Sistemos TODO diegimo diagrama')
 
----
+## 3. Naudotojo sąsajos projektas
+
+Github repozitorija: https://github.com/lgreitis/todo-client
+
+1. Pagrindinis puslapis, kai vartotojas nėra prisijungęs
+   ![Pagrindinis langas, kai vartotojas nėra prisijungęs wireframe](/docs/images/Landing_Unauth_Wireframe.png)
+   ![Pagrindinis langas, kai vartotojas nėra prisijungęs](/docs/images/Landing_Unauth.png)
+
+1. Prisijungimo puslapis
+   ![Prisijungimo puslapis wireframe](/docs/images/Login_Wireframe.png)
+   ![Prisijungimo puslapis](/docs/images/Login.png)
+
+1. Registracijos puslapis
+   ![Registracijos puslapis wireframe](/docs/images/Register_Wireframe.png)
+   ![Registracijos puslapis](/docs/images/Register.png)
+
+1. Registracijos puslapis, kai vartotojas yra pakviečiamas
+   ![Registracijos puslapis, kai vartotojas yra pakviečiamas wireframe](/docs/images/Invite_Register_Wireframe.png)
+   ![Registracijos puslapis, kai vartotojas yra pakviečiamas](/docs/images/Invite_Register.png)
+
+1. Pakvietimo puslapis
+   ![Pakvietimo puslapis wireframe](/docs/images/Invite_Wireframe.png)
+   ![Pakvietimo puslapis](/docs/images/Invite.png)
+
+1. Pagrindinis puslapis
+   ![Pagrindinis puslapis wireframe](/docs/images/Dash_Wireframe.png)
+   ![Pagrindinis puslapis](/docs/images/Dash.png)
+
+1. Admin lentelių puslapio atvaizdavimas
+   ![Admin lentelių puslapio atvaizdavimas wireframe](/docs/images/Table_Wireframe.png)
+   ![Admin lentelių puslapio atvaizdavimas](/docs/images/Table.png)
+
+1. Organizacijos pakvietimų valdymo puslapis
+   ![Organizacijos pakvietimų valdymo puslapis wireframe](/docs/images/Org_Invites_Wireframe.png)
+   ![Organizacijos pakvietimų valdymo puslapis](/docs/images/Org_Invites.png)
+
+1. Editoriaus puslapis
+   ![Editoriaus puslapis wireframe](/docs/images/Editor_Wireframe.png)
+   ![Editoriaus puslapis](/docs/images/Editor.png)
+
+1. Modalo komponentas
+   ![Modalo komponentas wireframe](/docs/images/Modal_Wireframe.png)
+   ![Modalo komponentas](/docs/images/Modal.png)
+
+1. Vartotojo nustatymų komponentas
+   ![Vartotojo nustatymų komponentas wireframe](/docs/images/Settings_Wireframe.png)
+   ![Vartotojo nustatymų komponentas](/docs/images/Settings.png)
+
+1. Hamburger meniu komponentas
+   ![Hamburger meniu komponentas wireframe](/docs/images/Hamburger_Wireframe.png)
+   ![Hamburger meniu komponentas](/docs/images/Hamburger.png)
+
+## 4. API specifikacija
+
+## 4. Išvados
