@@ -128,4 +128,65 @@ Github repozitorija: https://github.com/lgreitis/todo-client
 
 ## 4. API specifikacija
 
+Jeigu API endpoint reikalauja autentifikacijos, tada reikia pridėti užklausoje headerį:
+
+|  Pavadinimas  |    Reikšmė     |
+| :-----------: | :------------: |
+| Authorization | Bearer {token} |
+
+Jiegu vartotojas neatsiuniča tokeno arba tokenas yra blogas gražina tokius klaidos pranešimas:
+
+| Kodas |      Žinutė       |
+| :---: | :---------------: |
+|  401  | No token provided |
+|  401  |   Invalid token   |
+
+### 1. Index metodai
+
+|                               |                               |
+| ----------------------------- | ----------------------------- |
+| API metodas                   | Index (Get)                   |
+| Paskirtis                     | Patikrinti ar serveris veikia |
+| Kelias iki metodo             | /                             |
+| Užklausos struktūra           | -                             |
+| Reikalaujama autentifikacija? | Ne                            |
+| Reikalaujama rolė             | -                             |
+| Galimi klaidų kodai           | -                             |
+| Užklausos pavyzdys            | -                             |
+| Gauto atsakymo pavyzdys       | 200 `{ "hello": "All good" }` |
+
+### 1. User metodai
+
+|                               |                                                                                                               |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | getMeta (Get)                                                                                                 |
+| Paskirtis                     | Gauti dabartinio vartotojo duomenis                                                                           |
+| Kelias iki metodo             | /user                                                                                                         |
+| Užklausos struktūra           | -                                                                                                             |
+| Reikalaujama autentifikacija? | Taip                                                                                                          |
+| Reikalaujama rolė             | USER                                                                                                          |
+| Galimi klaidų kodai           | -                                                                                                             |
+| Užklausos pavyzdys            | -                                                                                                             |
+| Gauto atsakymo pavyzdys       | 200 `{"username":"test1","email":"test1@test.com","id":"164704b9-f310-46e9-8448-d3e269d3c205","role":"USER"}` |
+
+|                               |                                                                                                           |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------- |
+| API metodas                   | changeRole (Post)                                                                                         |
+| Paskirtis                     | Pakeisti vartotojo rolę                                                                                   |
+| Kelias iki metodo             | /user/role                                                                                                |
+| Užklausos struktūra           | `{"role":String,"userId":String}`                                                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                      |
+| Reikalaujama rolė             | SUPERADMIN                                                                                                |
+| Galimi klaidų kodai           | -                                                                                                         |
+| Užklausos pavyzdys            | `{"role":"USER","userId":"164704b9-f310-46e9-8448-d3e269d3c205"}`                                         |
+| Gauto atsakymo pavyzdys       | `{"username":"test1","email":"test1@test.com","id":"164704b9-f310-46e9-8448-d3e269d3c205","role":"USER"}` |
+
+### 1. Auth metodai
+
+### 1. Directory metodai
+
+### 1. Invite metodai
+
+### 1. Organization metodai
+
 ## 5. Išvados
