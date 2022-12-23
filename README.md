@@ -411,108 +411,114 @@ Jeigu API metodo užklausos struktūra yra neteisinga, serveris automatiškai gr
 
 ### 6. Organization metodai
 
-|                               |                            |
-| ----------------------------- | -------------------------- |
-| API metodas                   | createOrganization (POST)  |
-| Paskirtis                     | Sukurti naują organizaciją |
-| Kelias iki metodo             | /organization              |
-| Užklausos struktūra           | -                          |
-| Atsakymo struktūra            | -                          |
-| Reikalaujama autentifikacija? | Taip                       |
-| Reikalaujama rolė             | -                          |
-| Galimi klaidų kodai           | -                          |
-| Užklausos pavyzdys            | -                          |
-| Gauto atsakymo pavyzdys       | -                          |
+|                               |                                                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | createOrganization (POST)                                                                                                     |
+| Paskirtis                     | Sukurti naują organizaciją                                                                                                    |
+| Kelias iki metodo             | /organization                                                                                                                 |
+| Užklausos struktūra           | `{"name":String}`                                                                                                             |
+| Atsakymo struktūra            | `{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}`                        |
+| Reikalaujama autentifikacija? | Taip                                                                                                                          |
+| Reikalaujama rolė             | -                                                                                                                             |
+| Galimi klaidų kodai           | -                                                                                                                             |
+| Užklausos pavyzdys            | `{"name":"das"}`                                                                                                              |
+| Gauto atsakymo pavyzdys       | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"\_count":{"files":0,"users":1}}` |
 
-|                               |                                     |
-| ----------------------------- | ----------------------------------- |
-| API metodas                   | listOrganizations (GET)             |
-| Paskirtis                     | Gauti visas vartotojo organizacijas |
-| Kelias iki metodo             | /organization                       |
-| Užklausos struktūra           | -                                   |
-| Atsakymo struktūra            | -                                   |
-| Reikalaujama autentifikacija? | Taip                                |
-| Reikalaujama rolė             | -                                   |
-| Galimi klaidų kodai           | -                                   |
-| Užklausos pavyzdys            | -                                   |
-| Gauto atsakymo pavyzdys       | -                                   |
+|                               |                                                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| API metodas                   | listOrganizations (GET)                                                                                                        |
+| Paskirtis                     | Gauti visas vartotojo organizacijas                                                                                            |
+| Kelias iki metodo             | /organization                                                                                                                  |
+| Užklausos struktūra           | -                                                                                                                              |
+| Atsakymo struktūra            | `[{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}]`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                           |
+| Reikalaujama rolė             | -                                                                                                                              |
+| Galimi klaidų kodai           | -                                                                                                                              |
+| Užklausos pavyzdys            | -                                                                                                                              |
+| Gauto atsakymo pavyzdys       | `[{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}]` |
 
-|                               |                                            |
-| ----------------------------- | ------------------------------------------ |
-| API metodas                   | listAllOrganizations (GET)                 |
-| Paskirtis                     | Gauti visas organizacijas SUPERADMIN rolei |
-| Kelias iki metodo             | /organization/superadmin                   |
-| Užklausos struktūra           | -                                          |
-| Atsakymo struktūra            | -                                          |
-| Reikalaujama autentifikacija? | Taip                                       |
-| Reikalaujama rolė             | SUPERADMIN                                 |
-| Galimi klaidų kodai           | -                                          |
-| Užklausos pavyzdys            | -                                          |
-| Gauto atsakymo pavyzdys       | -                                          |
+|                               |                                                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| API metodas                   | listAllOrganizations (GET)                                                                                                     |
+| Paskirtis                     | Gauti visas organizacijas SUPERADMIN rolei                                                                                     |
+| Kelias iki metodo             | /organization/superadmin                                                                                                       |
+| Užklausos struktūra           | -                                                                                                                              |
+| Atsakymo struktūra            | `[{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}]`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                           |
+| Reikalaujama rolė             | SUPERADMIN                                                                                                                     |
+| Galimi klaidų kodai           | -                                                                                                                              |
+| Užklausos pavyzdys            | -                                                                                                                              |
+| Gauto atsakymo pavyzdys       | `[{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}]` |
 
-|                               |                       |
-| ----------------------------- | --------------------- |
-| API metodas                   | getOrganization (GET) |
-| Paskirtis                     | Gauti organizaciją    |
-| Kelias iki metodo             | /organization/:id     |
-| Užklausos struktūra           | -                     |
-| Atsakymo struktūra            | -                     |
-| Reikalaujama autentifikacija? | Taip                  |
-| Reikalaujama rolė             | -                     |
-| Galimi klaidų kodai           | -                     |
-| Užklausos pavyzdys            | -                     |
-| Gauto atsakymo pavyzdys       | -                     |
+|                               |                                                                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | getOrganization (GET)                                                                                                        |
+| Paskirtis                     | Gauti organizaciją                                                                                                           |
+| Kelias iki metodo             | /organization/:id                                                                                                            |
+| Užklausos struktūra           | -                                                                                                                            |
+| Atsakymo struktūra            | `{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                         |
+| Reikalaujama rolė             | -                                                                                                                            |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                 |
+| Užklausos pavyzdys            | -                                                                                                                            |
+| Gauto atsakymo pavyzdys       | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}` |
 
-|                               |                                  |
-| ----------------------------- | -------------------------------- |
-| API metodas                   | editOrganization (PATCH)         |
-| Paskirtis                     | Keisti organizacijos informaciją |
-| Kelias iki metodo             | /organization                    |
-| Užklausos struktūra           | -                                |
-| Atsakymo struktūra            | -                                |
-| Reikalaujama autentifikacija? | Taip                             |
-| Reikalaujama rolė             | OWNER                            |
-| Galimi klaidų kodai           | -                                |
-| Užklausos pavyzdys            | -                                |
-| Gauto atsakymo pavyzdys       | -                                |
+|                               |                                                                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | editOrganization (PATCH)                                                                                                     |
+| Paskirtis                     | Keisti organizacijos informaciją                                                                                             |
+| Kelias iki metodo             | /organization                                                                                                                |
+| Užklausos struktūra           | `{"name":String,"id":String}`                                                                                                |
+| Atsakymo struktūra            | `{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                         |
+| Reikalaujama rolė             | OWNER                                                                                                                        |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                 |
+| Užklausos pavyzdys            | `{"name":"test","id":"8fe597fc-8713-4d33-a94f-44c285348848"}`                                                                |
+| Gauto atsakymo pavyzdys       | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}` |
 
-|                               |                                  |
-| ----------------------------- | -------------------------------- |
-| API metodas                   | addUserToOrganization (POST)     |
-| Paskirtis                     | Pridėti vartotoją į organizaciją |
-| Kelias iki metodo             | /organization/add                |
-| Užklausos struktūra           | -                                |
-| Atsakymo struktūra            | -                                |
-| Reikalaujama autentifikacija? | Taip                             |
-| Reikalaujama rolė             | OWNER                            |
-| Galimi klaidų kodai           | -                                |
-| Užklausos pavyzdys            | -                                |
-| Gauto atsakymo pavyzdys       | -                                |
+|                               |                                                                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | addUserToOrganization (POST)                                                                                                 |
+| Paskirtis                     | Pridėti vartotoją į organizaciją                                                                                             |
+| Kelias iki metodo             | /organization/add                                                                                                            |
+| Užklausos struktūra           | `{"userId":String,"id":String}`                                                                                              |
+| Atsakymo struktūra            | `{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                         |
+| Reikalaujama rolė             | OWNER                                                                                                                        |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                 |
+| Užklausos pavyzdys            | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848", userId:"164704b9-f310-46e9-8448-d3e269d3c205"}`                               |
+| Gauto atsakymo pavyzdys       | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}` |
 
-|                               |                                      |
-| ----------------------------- | ------------------------------------ |
-| API metodas                   | removeUserFromOrganization (POST)    |
-| Paskirtis                     | Pašalinti vartotoją iš organizacijos |
-| Kelias iki metodo             | /organization/remove                 |
-| Užklausos struktūra           | -                                    |
-| Atsakymo struktūra            | -                                    |
-| Reikalaujama autentifikacija? | Taip                                 |
-| Reikalaujama rolė             | OWNER                                |
-| Galimi klaidų kodai           | -                                    |
-| Užklausos pavyzdys            | -                                    |
-| Gauto atsakymo pavyzdys       | -                                    |
+|                               |                                                                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | removeUserFromOrganization (POST)                                                                                            |
+| Paskirtis                     | Pašalinti vartotoją iš organizacijos                                                                                         |
+| Kelias iki metodo             | /organization/remove                                                                                                         |
+| Užklausos struktūra           | `{"userId":String,"id":String}`                                                                                              |
+| Atsakymo struktūra            | `{"name":String,"id":String,"ownerUser":{"username":String,},"_count":{"users":Number,"files":Number}`                       |
+| Reikalaujama autentifikacija? | Taip                                                                                                                         |
+| Reikalaujama rolė             | OWNER                                                                                                                        |
+| Galimi klaidų kodai           | 404 `Organization not found` <br> 400 `Can't remove owner from organization`                                                 |
+| Užklausos pavyzdys            | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848", userId:"164704b9-f310-46e9-8448-d3e269d3c205"}`                               |
+| Gauto atsakymo pavyzdys       | `{"id":"8fe597fc-8713-4d33-a94f-44c285348848","name":"das","ownerUser":{"username":"test1"},"_count":{"files":0,"users":1}}` |
 
-|                               |                             |
-| ----------------------------- | --------------------------- |
-| API metodas                   | deleteOrganization (DELETE) |
-| Paskirtis                     | Pašalinti organizaciją      |
-| Kelias iki metodo             | /organization/:id           |
-| Užklausos struktūra           | -                           |
-| Atsakymo struktūra            | -                           |
-| Reikalaujama autentifikacija? | Taip                        |
-| Reikalaujama rolė             | OWNER                       |
-| Galimi klaidų kodai           | -                           |
-| Užklausos pavyzdys            | -                           |
-| Gauto atsakymo pavyzdys       | -                           |
+|                               |                                                    |
+| ----------------------------- | -------------------------------------------------- |
+| API metodas                   | deleteOrganization (DELETE)                        |
+| Paskirtis                     | Pašalinti organizaciją                             |
+| Kelias iki metodo             | /organization/:id                                  |
+| Užklausos struktūra           | -                                                  |
+| Atsakymo struktūra            | -                                                  |
+| Reikalaujama autentifikacija? | Taip                                               |
+| Reikalaujama rolė             | OWNER                                              |
+| Galimi klaidų kodai           | 404 `Organization not found`                       |
+| Užklausos pavyzdys            | /organization/8fe597fc-8713-4d33-a94f-44c285348848 |
+| Gauto atsakymo pavyzdys       | 200                                                |
 
 ## 5. Išvados
+
+1. Realizuota REST principais paremtas API serveris su 27 metodais, kurių didelė dalis nebuvo reikalinga.
+1. Išbandytas naujas dizaino stilius vartotojo sąsajoje, kuris yra minimalistinis ir modernus.
+1. Realizuota `JWT refresh token` autentifikacija.
+1. Išbandyta nauja API užklausų valdymo sistema vartotojo sąsajoje `redux toolkit query`
+1. Išbandyta nauja ORM biblioteka serveryje `prisma`, kuri leidžia lengvai atlikti migracijas, valdyti duomenų bazę, kurti naujus modelius ir juos integruoti tieisiai į typescript serverį

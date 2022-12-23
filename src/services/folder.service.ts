@@ -31,7 +31,6 @@ export const getFolder = async (id: string) => {
 };
 
 export const removeFolder = async (data: RemoveItemDto) => {
-  console.log('here');
   await prisma.folder.delete({ where: { id: data.id } });
 };
 
