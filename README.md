@@ -147,6 +147,12 @@ Jeigu API metodas reikalauja specifinės rolės, yra galimas šis klaidos kodas
 | :---: | :-------: |
 |  403  | Forbidden |
 
+Jeigu API metodo užklausos struktūra yra neteisinga, serveris automatiškai gražins šį klaidos pranešimą:
+
+| Kodas |        Žinutė        |
+| :---: | :------------------: |
+|  400  | Zod klaidos objektas |
+
 ### 1. Index metodai
 
 |                               |                               |
@@ -258,8 +264,255 @@ Jeigu API metodas reikalauja specifinės rolės, yra galimas šis klaidos kodas
 | Užklausos pavyzdys            | /directory/efca5ca2-543a-4aaa-8095-334a0e2abfd9                                                                                                                                       |
 | Gauto atsakymo pavyzdys       | 200 `{"id":"e692a3f3-59f4-48c3-8786-4c71dded61df","name":"test","parentId":"456d6630-3638-49ee-af34-17939940d86b","data":"","organizationId":"efca5ca2-543a-4aaa-8095-334a0e2abfd9"}` |
 
+|                               |                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | getAll (GET)                                                                                                            |
+| Paskirtis                     | Gauti visus failus organizacijoje                                                                                       |
+| Kelias iki metodo             | /directory/all/:organizationId                                                                                          |
+| Užklausos struktūra           | -                                                                                                                       |
+| Atsakymo struktūra            | `{"items":[{"id":String,"name":String,"parentId":String/ null,"type":String}]}`                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                                    |
+| Reikalaujama rolė             | -                                                                                                                       |
+| Galimi klaidų kodai           | 404, `Organization not found`                                                                                           |
+| Užklausos pavyzdys            | /directory/all/efca5ca2-543a-4aaa-8095-334a0e2abfd9                                                                     |
+| Gauto atsakymo pavyzdys       | 200 `{"items":[{"id":"ca9a8d9c-798a-4cdd-82f3-789d6f146684","name":"23452353245324","parentId":null,"type":"folder"}]}` |
+
+|                               |                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | getChildren (GET)                                                                                                       |
+| Paskirtis                     | Gauti aplanko vaikus                                                                                                    |
+| Kelias iki metodo             | /directory/:organizationId/:parentId                                                                                    |
+| Užklausos struktūra           | -                                                                                                                       |
+| Atsakymo struktūra            | `{"items":[{"id":String,"name":String,"parentId":String/ null,"type":String}]}`                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                                    |
+| Reikalaujama rolė             | -                                                                                                                       |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                            |
+| Užklausos pavyzdys            | /directory/efca5ca2-543a-4aaa-8095-334a0e2abfd9/456d6630-3638-49ee-af34-17939940d86b                                    |
+| Gauto atsakymo pavyzdys       | 200 `{"items":[{"id":"ca9a8d9c-798a-4cdd-82f3-789d6f146684","name":"23452353245324","parentId":null,"type":"folder"}]}` |
+
+|                               |                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | createItem (POST)                                                                                                       |
+| Paskirtis                     | Sukurti naują failą                                                                                                     |
+| Kelias iki metodo             | /directory                                                                                                              |
+| Užklausos struktūra           | `{"type":String,"name":String,"parentId":String,"organizationId":String}`                                               |
+| Atsakymo struktūra            | `{"items":[{"id":String,"name":String,"parentId":String/ null,"type":String}]}`                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                                    |
+| Reikalaujama rolė             | -                                                                                                                       |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                            |
+| Užklausos pavyzdys            | `{"organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178","name":"dasd","type":"file"}`                                 |
+| Gauto atsakymo pavyzdys       | 200 `{"items":[{"id":"ca9a8d9c-798a-4cdd-82f3-789d6f146684","name":"23452353245324","parentId":null,"type":"folder"}]}` |
+
+|                               |                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | editItem (PATCH)                                                                                                        |
+| Paskirtis                     | Pakeisti failo informaciją                                                                                              |
+| Kelias iki metodo             | /directory                                                                                                              |
+| Užklausos struktūra           | `{"id":String,"name":String,"type":String}`                                                                             |
+| Atsakymo struktūra            | `{"items":[{"id":String,"name":String,"parentId":String/ null,"type":String}]}`                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                                    |
+| Reikalaujama rolė             | -                                                                                                                       |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                            |
+| Užklausos pavyzdys            | `{"id":"ae623760-3086-4eb8-bc6b-0401074a9728","name":"das","type":"file"}`                                              |
+| Gauto atsakymo pavyzdys       | 200 `{"items":[{"id":"ca9a8d9c-798a-4cdd-82f3-789d6f146684","name":"23452353245324","parentId":null,"type":"folder"}]}` |
+
+|                               |                                                                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | removeItem (DELETE)                                                                                                     |
+| Paskirtis                     | Pašalinti failą                                                                                                         |
+| Kelias iki metodo             | /directory/:id/:type                                                                                                    |
+| Užklausos struktūra           | -                                                                                                                       |
+| Atsakymo struktūra            | `{"items":[{"id":String,"name":String,"parentId":String/ null,"type":String}]}`                                         |
+| Reikalaujama autentifikacija? | Taip                                                                                                                    |
+| Reikalaujama rolė             | -                                                                                                                       |
+| Galimi klaidų kodai           | 404 `Organization not found` <br> 404 `Not Found`                                                                       |
+| Užklausos pavyzdys            | `/directory/ae623760-3086-4eb8-bc6b-0401074a9728/file`                                                                  |
+| Gauto atsakymo pavyzdys       | 200 `{"items":[{"id":"ca9a8d9c-798a-4cdd-82f3-789d6f146684","name":"23452353245324","parentId":null,"type":"folder"}]}` |
+
 ### 5. Invite metodai
 
+|                               |                                                                                                                                                                                                                                                              |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| API metodas                   | getAllInvites (GET)                                                                                                                                                                                                                                          |
+| Paskirtis                     | Gauti visas organizacios pakivetimų nuorodas                                                                                                                                                                                                                 |
+| Kelias iki metodo             | /invite/organization/:organizationId                                                                                                                                                                                                                         |
+| Užklausos struktūra           | -                                                                                                                                                                                                                                                            |
+| Atsakymo struktūra            | `[{"id":String,"disabled":Boolean,"dateCreated":String,"expirationDate":String,"organizationId":String,"organization":{"name":String},"_count":{"usersInvited":Number}}]`                                                                                    |
+| Reikalaujama autentifikacija? | Taip                                                                                                                                                                                                                                                         |
+| Reikalaujama rolė             | OWNER                                                                                                                                                                                                                                                        |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                                                                                                                                                 |
+| Užklausos pavyzdys            | /invite/organization/ee11a0b5-e026-4e11-be1d-47d6e52f6178                                                                                                                                                                                                    |
+| Gauto atsakymo pavyzdys       | 200 `[{"id":"13869489-f2ff-4467-8d1c-bd07250e7b1e","disabled":false,"dateCreated":"1671742553943","expirationDate":"1672437600000","organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178","organization":{"name":"asdfafsd"},"_count":{"usersInvited":1}}]` |
+
+|                               |                                                                                                                                                                                                                                |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| API metodas                   | getInvite (GET)                                                                                                                                                                                                                |
+| Paskirtis                     | Gauti pakvietimo informaciją                                                                                                                                                                                                   |
+| Kelias iki metodo             | /invite/:id                                                                                                                                                                                                                    |
+| Užklausos struktūra           | -                                                                                                                                                                                                                              |
+| Atsakymo struktūra            | `{"id":String,"disabled":Boolean,"dateCreated":String,"expirationDate":String,"organizationId":String,"organization":{"name":String}}` -                                                                                       |
+| Reikalaujama autentifikacija? | Ne                                                                                                                                                                                                                             |
+| Reikalaujama rolė             | -                                                                                                                                                                                                                              |
+| Galimi klaidų kodai           | 404 `Couldn't find an invite`                                                                                                                                                                                                  |
+| Užklausos pavyzdys            | /invite/13869489-f2ff-4467-8d1c-bd07250e7b1e                                                                                                                                                                                   |
+| Gauto atsakymo pavyzdys       | 200 `{"id":"13869489-f2ff-4467-8d1c-bd07250e7b1e","disabled":false,"dateCreated":"1671742553943","expirationDate":"1672437600000","organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178","organization":{"name":"asdfafsd"}}` |
+
+|                               |                                                                                                                                                                                             |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | createInvite (POST)                                                                                                                                                                         |
+| Paskirtis                     | Sukurti organizacijos pakvieitmą                                                                                                                                                            |
+| Kelias iki metodo             | /invite                                                                                                                                                                                     |
+| Užklausos struktūra           | {"organizationId":String,"expirationDate":Number}                                                                                                                                           |
+| Atsakymo struktūra            | `{"id":String,"disabled":Boolean,"dateCreated":String,"expirationDate":String,"organizationId":String}`                                                                                     |
+| Reikalaujama autentifikacija? | Taip                                                                                                                                                                                        |
+| Reikalaujama rolė             | OWNER                                                                                                                                                                                       |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                                                                                |
+| Užklausos pavyzdys            | `{"organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178","expirationDate":1672437600000}`                                                                                                  |
+| Gauto atsakymo pavyzdys       | 200 `{"id":"07424fc1-cc36-4ce9-9b99-0201df0ec34d","disabled":false,"dateCreated":"1671753885981","expirationDate":"1672437600000","organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178"}` |
+
+|                               |                                                                                                                                                                                            |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| API metodas                   | editInvite (PATCH)                                                                                                                                                                         |
+| Paskirtis                     | Keisti organizacijos informaciją                                                                                                                                                           |
+| Kelias iki metodo             | /invite                                                                                                                                                                                    |
+| Užklausos struktūra           | {"id":String,"expirationDate":Number,"disabled":Boolean}                                                                                                                                   |
+| Atsakymo struktūra            | `{"id":String,"disabled":Boolean,"dateCreated":String,"expirationDate":String,"organizationId":String`                                                                                     |
+| Reikalaujama autentifikacija? | Taip                                                                                                                                                                                       |
+| Reikalaujama rolė             | OWNER                                                                                                                                                                                      |
+| Galimi klaidų kodai           | 404 `Organization not found`                                                                                                                                                               |
+| Užklausos pavyzdys            | `{"id":"07424fc1-cc36-4ce9-9b99-0201df0ec34d","expirationDate":1672437600000,"disabled":true}`                                                                                             |
+| Gauto atsakymo pavyzdys       | 200 `{"id":"07424fc1-cc36-4ce9-9b99-0201df0ec34d","disabled":true,"dateCreated":"1671753885981","expirationDate":"1672437600000","organizationId":"ee11a0b5-e026-4e11-be1d-47d6e52f6178"}` |
+
+|                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API metodas                   | createInviteUser (POST)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Paskirtis                     | Sukurti naują vartotoją ir pridėti į organizaciją                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Kelias iki metodo             | /invite/createUser                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Užklausos struktūra           | {"username":String,"email":String,"password":String,"inviteId":String}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Atsakymo struktūra            | `{"accessToken":String,"refreshToken":String,"username":String,"email":String,"id":String,"role":String}`                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Reikalaujama autentifikacija? | Ne                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Reikalaujama rolė             | -                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Galimi klaidų kodai           | 400 `This invite is not valid` <br> 400 `This organization doesn't exist`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Užklausos pavyzdys            | `{"username":"test1","email":"test1@test.com","password":"test123","inviteId":"07424fc1-cc36-4ce9-9b99-0201df0ec34d"}`                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Gauto atsakymo pavyzdys       | 200 `{"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5NWE3ZjhkLWY4ZGUtNGY3MC05MWQwLWMxN2M0NWY3Y2ExMyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjcxNzQ5MDI3LCJleHAiOjE2NzE3NTI2Mjd9.zuMeQEGHaWiGw9DxVAEvfIWZPcvPFa9G0tgQtS1SfyE", "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI5NWE3ZjhkLWY4ZGUtNGY3MC05MWQwLWMxN2M0NWY3Y2ExMyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNjcxNzQ5MDI3LCJleHAiOjE2NzQzNDEwMjd9.RgMxQocF5vOPGe42Ig8fX_qh5IhYJUbmPAty8eqNZk0", "email":"test12@test.com","username":"test123","id":"b95a7f8d-f8de-4f70-91d0-c17c45f7ca13","role":"USER"}` |
+
+|                               |                                                                           |
+| ----------------------------- | ------------------------------------------------------------------------- |
+| API metodas                   | addUser (POST)                                                            |
+| Paskirtis                     | Pridėti vartotoją prie organizacijos                                      |
+| Kelias iki metodo             | /invite/addUser                                                           |
+| Užklausos struktūra           | `{"inviteId":String}`                                                     |
+| Atsakymo struktūra            | -                                                                         |
+| Reikalaujama autentifikacija? | Taip                                                                      |
+| Reikalaujama rolė             | -                                                                         |
+| Galimi klaidų kodai           | 400 `This invite is not valid` <br> 400 `This organization doesn't exist` |
+| Užklausos pavyzdys            | `{"inviteId":"b95a7f8d-f8de-4f70-91d0-c17c45f7ca13"}`                     |
+| Gauto atsakymo pavyzdys       | 200                                                                       |
+
 ### 6. Organization metodai
+
+|                               |                            |
+| ----------------------------- | -------------------------- |
+| API metodas                   | createOrganization (POST)  |
+| Paskirtis                     | Sukurti naują organizaciją |
+| Kelias iki metodo             | /organization              |
+| Užklausos struktūra           | -                          |
+| Atsakymo struktūra            | -                          |
+| Reikalaujama autentifikacija? | Taip                       |
+| Reikalaujama rolė             | -                          |
+| Galimi klaidų kodai           | -                          |
+| Užklausos pavyzdys            | -                          |
+| Gauto atsakymo pavyzdys       | -                          |
+
+|                               |                                     |
+| ----------------------------- | ----------------------------------- |
+| API metodas                   | listOrganizations (GET)             |
+| Paskirtis                     | Gauti visas vartotojo organizacijas |
+| Kelias iki metodo             | /organization                       |
+| Užklausos struktūra           | -                                   |
+| Atsakymo struktūra            | -                                   |
+| Reikalaujama autentifikacija? | Taip                                |
+| Reikalaujama rolė             | -                                   |
+| Galimi klaidų kodai           | -                                   |
+| Užklausos pavyzdys            | -                                   |
+| Gauto atsakymo pavyzdys       | -                                   |
+
+|                               |                                            |
+| ----------------------------- | ------------------------------------------ |
+| API metodas                   | listAllOrganizations (GET)                 |
+| Paskirtis                     | Gauti visas organizacijas SUPERADMIN rolei |
+| Kelias iki metodo             | /organization/superadmin                   |
+| Užklausos struktūra           | -                                          |
+| Atsakymo struktūra            | -                                          |
+| Reikalaujama autentifikacija? | Taip                                       |
+| Reikalaujama rolė             | SUPERADMIN                                 |
+| Galimi klaidų kodai           | -                                          |
+| Užklausos pavyzdys            | -                                          |
+| Gauto atsakymo pavyzdys       | -                                          |
+
+|                               |                       |
+| ----------------------------- | --------------------- |
+| API metodas                   | getOrganization (GET) |
+| Paskirtis                     | Gauti organizaciją    |
+| Kelias iki metodo             | /organization/:id     |
+| Užklausos struktūra           | -                     |
+| Atsakymo struktūra            | -                     |
+| Reikalaujama autentifikacija? | Taip                  |
+| Reikalaujama rolė             | -                     |
+| Galimi klaidų kodai           | -                     |
+| Užklausos pavyzdys            | -                     |
+| Gauto atsakymo pavyzdys       | -                     |
+
+|                               |                                  |
+| ----------------------------- | -------------------------------- |
+| API metodas                   | editOrganization (PATCH)         |
+| Paskirtis                     | Keisti organizacijos informaciją |
+| Kelias iki metodo             | /organization                    |
+| Užklausos struktūra           | -                                |
+| Atsakymo struktūra            | -                                |
+| Reikalaujama autentifikacija? | Taip                             |
+| Reikalaujama rolė             | OWNER                            |
+| Galimi klaidų kodai           | -                                |
+| Užklausos pavyzdys            | -                                |
+| Gauto atsakymo pavyzdys       | -                                |
+
+|                               |                                  |
+| ----------------------------- | -------------------------------- |
+| API metodas                   | addUserToOrganization (POST)     |
+| Paskirtis                     | Pridėti vartotoją į organizaciją |
+| Kelias iki metodo             | /organization/add                |
+| Užklausos struktūra           | -                                |
+| Atsakymo struktūra            | -                                |
+| Reikalaujama autentifikacija? | Taip                             |
+| Reikalaujama rolė             | OWNER                            |
+| Galimi klaidų kodai           | -                                |
+| Užklausos pavyzdys            | -                                |
+| Gauto atsakymo pavyzdys       | -                                |
+
+|                               |                                      |
+| ----------------------------- | ------------------------------------ |
+| API metodas                   | removeUserFromOrganization (POST)    |
+| Paskirtis                     | Pašalinti vartotoją iš organizacijos |
+| Kelias iki metodo             | /organization/remove                 |
+| Užklausos struktūra           | -                                    |
+| Atsakymo struktūra            | -                                    |
+| Reikalaujama autentifikacija? | Taip                                 |
+| Reikalaujama rolė             | OWNER                                |
+| Galimi klaidų kodai           | -                                    |
+| Užklausos pavyzdys            | -                                    |
+| Gauto atsakymo pavyzdys       | -                                    |
+
+|                               |                             |
+| ----------------------------- | --------------------------- |
+| API metodas                   | deleteOrganization (DELETE) |
+| Paskirtis                     | Pašalinti organizaciją      |
+| Kelias iki metodo             | /organization/:id           |
+| Užklausos struktūra           | -                           |
+| Atsakymo struktūra            | -                           |
+| Reikalaujama autentifikacija? | Taip                        |
+| Reikalaujama rolė             | OWNER                       |
+| Galimi klaidų kodai           | -                           |
+| Užklausos pavyzdys            | -                           |
+| Gauto atsakymo pavyzdys       | -                           |
 
 ## 5. Išvados
